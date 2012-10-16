@@ -9,6 +9,31 @@
 	<version>1.0-SNAPSHOT</version>
 	<description>Generates RDF triples from XML datastreams in Fedora objects.</description>
 
+	<developers>
+		<developer>
+			<name>A. Soroka</name>
+			<email>ajs6f@virginia.edu</email>
+			<organization>the University of Virginia Library</organization>
+			<organizationUrl>http://www.library.virginia.edu</organizationUrl>
+			<timezone>U.S. Eastern</timezone>
+			<roles>
+				<role>Instigator</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<mailingLists>
+		<mailingList>
+			<name>Contact developer:</name>
+			<post>ajs6f@virginia.edu</post>
+		</mailingList>
+	</mailingLists>
+
+	<scm>
+		<connection>scm:git://github.com/ajs6f/fcrepo-xslt-triplegenerator.git</connection>
+		<url>https://github.com/ajs6f/fcrepo-xslt-triplegenerator</url>
+	</scm>
+
 	<properties>
 		<fedora.version>3.6.1</fedora.version>
 	</properties>
@@ -43,10 +68,58 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<!-- <configuration>
-					<outputDirectory>${project.build}</outputDirectory>
-				</configuration> -->
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.0</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<!-- <minimizeJar>true</minimizeJar> -->
+					<shadedArtifactAttached>true</shadedArtifactAttached>
+					<shadedClassifierName>with-dependencies</shadedClassifierName>
+					<keepDependenciesWithProvidedScope>false</keepDependenciesWithProvidedScope>
+					<artifactSet>
+						<excludes>
+							<exclude>org.slf4j:*</exclude>
+						</excludes>
+					</artifactSet>
+
+					<filters>
+						<filter>
+							<artifact>*:*</artifact>
+							<excludes>
+								<exclude>META-INF/*.SF</exclude>
+								<exclude>META-INF/*.DSA</exclude>
+								<exclude>META-INF/*.RSA</exclude>
+							</excludes>
+						</filter>
+					</filters>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.1</version>
+			</plugin>
+			<plugin>
+				<groupId>com.github.github</groupId>
+				<artifactId>site-maven-plugin</artifactId>
+				<version>0.6</version>
+				<configuration>
+					<message>Creating site for ${project.version}</message>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>site</goal>
+						</goals>
+						<phase>site</phase>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -56,6 +129,7 @@
 			<groupId>org.fcrepo</groupId>
 			<artifactId>fcrepo-server</artifactId>
 			<version>${fedora.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.any23</groupId>
@@ -72,6 +146,7 @@
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<version>1.9.5-rc1</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -80,5 +155,36 @@
 			<id>apache-snapshots</id>
 			<url>https://repository.apache.org/content/repositories/snapshots</url>
 		</repository>
+		<repository>
+			<id>any23-svn</id>
+			<url>https://svn.apache.org/repos/asf/any23/repo-ext</url>
+		</repository>
 	</repositories>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.5.1</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>dependencies</report>
+							<report>project-team</report>
+							<report>mailing-list</report>
+							<report>cim</report>
+							<report>issue-tracking</report>
+							<report>license</report>
+							<report>scm</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9</version>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>

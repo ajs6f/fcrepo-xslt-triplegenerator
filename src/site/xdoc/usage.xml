@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+    <body>
+        <section name="Configuring this component into Fedora">
+
+            <p> To use this component with Fedora, you will need to adjust the (Spring)
+                configuration of the triple generator network. Normally, that is available in a
+                file: <code>$FEDORA_HOME/server/config/spring/triple-generator.xml</code>
+                Within this file you will see elements like:</p>
+            <source>
+    <![CDATA[
+    <bean id="ServiceDefinition-3.0"
+      class="org.fcrepo.server.resourceIndex.ServiceDefinitionTripleGenerator_3_0"
+      scope="prototype">
+    </bean>
+    ]]>
+            </source>
+            <p>each of which defines a triple generator, and an element like:</p>
+            <source>
+    <![CDATA[
+    <bean id="org.fcrepo.server.resourceIndex.TripleGenerator"
+      class="org.fcrepo.server.resourceIndex.ModelBasedTripleGenerator"
+      scope="prototype">
+      <property name="tripleGenerators">
+          <map>
+              <entry key="info:fedora/fedora-system:FedoraObject-3.0" value-ref="Object-3.0" />
+              <entry key="info:fedora/fedora-system:ContentModel-3.0" value-ref="ContentModel-3.0" />
+              <entry key="info:fedora/fedora-system:ServiceDefinition-3.0" value-ref="ServiceDefinition-3.0" />
+              <entry key="info:fedora/fedora-system:ServiceDeployment-3.0" value-ref="ServiceDeployment-3.0" />
+          </map>
+      </property>
+    </bean>
+    ]]>
+            </source>
+            <p>Each of the entry elements in this last stanza represent a mapping from a content model
+                (key) to a triple generator (value-ref). You must create a new generator and map it to a content model
+            with which it is to be used. You can start by adding a pair of elements like these:</p>
+            <source>
+<![CDATA[
+  <bean id="xslt-file" class="org.springframework.core.io.FileSystemResource">
+    <constructor-arg type="String"
+      value="/Documents/fcrepo-xslt-triple/mods2rdf.xsl"/>
+  </bean>
+  <bean id="mods-extractor" class="edu.virginia.lib.fedora.XsltDsTripleGenerator">
+    <property name="datastreamId" value="descMetadata"/>
+    <property name="xsltInputStreamSource" ref="xslt-file"/>
+  </bean>
+  ]]>
+            </source>
+            <p>The first bean locates an XSLT document that will be used to transform XML to RDF/XML. Obviously, you'll
+                want to have that file available by the time you expect extraction to be ocurring. The second
+            (using that first bean as a parameter) defines the actual triple generator that we are adding. The other 
+            parameter (datastreamId) declares which datastream in the object at hand is to be transformed.</p>
+            <p>Now we can add a mapping from a content model to our new triple generator:</p>
+            <source>
+<![CDATA[
+<entry key="info:fedora/djatoka:jp2CModel" value-ref="mods-extractor" />
+]]>
+            </source>
+        </section>
+        <section name="Configuring the XSLT for use with this component">
+            <p>The XSLT document for use with this configuration must do one job: it must operate on an XML document and 
+            produce an RDF/XML document. (It's worth pointing out that if the original document is already RDF/XML, then the tranform
+            can just be an identity.) Two parameters are available for use with this transform: <code>pid</code> and <code>datastreamId</code>.</p>
+        </section> 
+    </body>
+</document>

@@ -18,6 +18,11 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableSet.Builder;
 
+/**
+ * @author ajs6f
+ * Utility class to produce a set of triples from a stream of triples
+ * produced by Any23 parsing.
+ */
 public class SetTripleHandler implements TripleHandler {
 
     private Builder<Triple> builder = new Builder<Triple>();
