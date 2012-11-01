@@ -44,9 +44,24 @@
 				<configuration>
 					<dependentWarIncludes>**</dependentWarIncludes>
 				</configuration>
-				<!-- <executions> <execution> <phase>generate-resources</phase> <goals> 
-					<goal>inplace</goal> </goals> </execution> <execution> <phase>package</phase> 
-					<goals> <goal>war</goal> </goals> </execution> </executions> -->
+			</plugin>
+			<plugin>
+				<groupId>com.github.github</groupId>
+				<artifactId>downloads-maven-plugin</artifactId>
+				<version>0.5</version>
+				<executions>
+					<execution>
+						<phase>site</phase>
+						<goals>
+							<goal>upload</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<description>Fedora webapp with fcrepo-xslt-triplegenerator pre-installed</description>
+					<override>true</override>
+					<server>githubpersonal</server>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
