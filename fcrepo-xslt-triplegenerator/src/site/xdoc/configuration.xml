@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+    <body>
+        <section name="Making this component available to Fedora">
+            <p>Install the <a href="https://github.com/downloads/ajs6f/fcrepo-xslt-triplegenerator/fcrepo-xslt-triplegenerator-1.0-SNAPSHOT-with-dependencies.jar">built library</a> into the <code>WEB-INF/lib</code> directory of
+            your Fedora web-app. Be aware that this is a large package of code, because it includes all
+            of the necessary gear for parsing RDF.</p>
+        </section>
+        <section name="Configuring this component into Fedora">
+            <p> To use this component with Fedora, you will need to adjust the (Spring)
+                configuration of the triple generator network. Normally, that is available in a
+                file: <code>$FEDORA_HOME/server/config/spring/triple-generator.xml</code>
+                Within this file you will see elements like:</p>
+            <source>
+    <![CDATA[
+    <bean id="ServiceDefinition-3.0"
+      class="org.fcrepo.server.resourceIndex.ServiceDefinitionTripleGenerator_3_0"
+      scope="prototype">
+    </bean>
+    ]]>
+            </source>
+            <p>each of which defines a triple generator, and an element like:</p>
+            <source>
+    <![CDATA[
+    <bean id="org.fcrepo.server.resourceIndex.TripleGenerator"
+      class="org.fcrepo.server.resourceIndex.ModelBasedTripleGenerator"
+      scope="prototype">
+      <property name="tripleGenerators">
+          <map>
+              <entry key="info:fedora/fedora-system:FedoraObject-3.0" value-ref="Object-3.0" />
+              <entry key="info:fedora/fedora-system:ContentModel-3.0" value-ref="ContentModel-3.0" />
+              <entry key="info:fedora/fedora-system:ServiceDefinition-3.0" value-ref="ServiceDefinition-3.0" />
+              <entry key="info:fedora/fedora-system:ServiceDeployment-3.0" value-ref="ServiceDeployment-3.0" />
+          </map>
+      </property>
+    </bean>
+    ]]>
+            </source>
+            <p>Each of the <code>entry</code> elements in this last stanza represent a mapping from a content model
+                (key) to a triple generator (value-ref). You must create a new generator and map it to a content model
+            with which it is to be used. You start by adding an element like this:</p>
+            <source>
+<![CDATA[
+  
+  <bean id="mods-extractor" class="edu.virginia.lib.fedora.XsltDsTripleGenerator">
+    <property name="datastreamId" value="descMetadata"/>
+    <property name="xsltInputStreamSource">
+         <bean id="xslt-file" class="org.springframework.core.io.FileSystemResource">
+            <constructor-arg type="String" value="/Documents/fcrepo-xslt-triple/mods2rdf.xsl"/>
+         </bean>
+    </property>
+  </bean>
+  ]]>
+            </source>
+            <p> This
+            bean defines the actual triple generator that we are adding. The  parameter <code>datastreamId</code>
+                declares which datastream in the object at hand is to be transformed.
+                The parameter <code>xsltInputStreamSource</code> locates an XSLT document
+                that will be used to transform XML to RDF/XML. Obviously, you'll
+            want to have that file available by the time you expect extraction to be ocurring.</p>
+            <p>Now we can add a mapping from a content model to our new triple generator:</p>
+            <source>
+<![CDATA[
+<entry key="info:fedora/uva-lib:hasMODS" value-ref="mods-extractor" />
+]]>
+            </source>
+        </section>
+        <section name="Configuring the XSLT for use with this component">
+            <p>The XSLT document for use with this configuration must do one job: it must operate on an XML document and 
+            produce an RDF/XML document. (It's worth pointing out that if the original document is already RDF/XML, then the transform
+            can just be an identity transform.) Two parameters are available for use with this transform: <code>pid</code> and <code>datastreamId</code>.
+            The usage of RDF-subjects in the output of this transform is subject to certain conditions:
+            See <a href="xslt.html">here</a> for more info.</p>
+        </section> 
+    </body>
+</document>

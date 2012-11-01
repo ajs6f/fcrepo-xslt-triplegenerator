@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>edu.virginia.lib.fedora</groupId>
+		<artifactId>xslt-triplegenerator</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>fcrepo-webapp-fedora</artifactId>
+	<packaging>war</packaging>
+	<name>Fedora webapp</name>
+	<description>Fedora webapp with fcrepo-xslt-triplegenerator included (for integration testing, etc.).</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.fcrepo</groupId>
+			<artifactId>fcrepo-webapp-fedora</artifactId>
+			<version>${fedora.version}</version>
+			<type>war</type>
+		</dependency>
+		<dependency>
+			<groupId>edu.virginia.lib.fedora</groupId>
+			<artifactId>sample-xslt</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>edu.virginia.lib.fedora</groupId>
+			<artifactId>fcrepo-xslt-triplegenerator</artifactId>
+			<version>${project.version}</version>
+			<classifier>with-dependencies</classifier>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<dependentWarIncludes>**</dependentWarIncludes>
+				</configuration>
+				<!-- <executions> <execution> <phase>generate-resources</phase> <goals> 
+					<goal>inplace</goal> </goals> </execution> <execution> <phase>package</phase> 
+					<goals> <goal>war</goal> </goals> </execution> </executions> -->
+			</plugin>
+		</plugins>
+	</build>
+</project>

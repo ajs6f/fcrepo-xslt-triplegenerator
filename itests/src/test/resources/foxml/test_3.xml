@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<foxml:digitalObject VERSION="1.1" PID="test:3" FEDORA_URI="info:fedora/test:3"
+    xmlns:foxml="info:fedora/fedora-system:def/foxml#"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="info:fedora/fedora-system:def/foxml# http://www.fedora.info/definitions/1/0/foxml1-1.xsd">
+    <foxml:objectProperties>
+        <foxml:property NAME="info:fedora/fedora-system:def/model#state" VALUE="Active"/>
+        <foxml:property NAME="info:fedora/fedora-system:def/model#label"
+            VALUE="Test object 2 for fcrepo-xslt-triplegenerator"/>
+    </foxml:objectProperties>
+
+    <foxml:datastream ID="DC" FEDORA_URI="info:fedora/test:3/DC" STATE="A" CONTROL_GROUP="X"
+        VERSIONABLE="true">
+        <foxml:datastreamVersion ID="DC1.0" LABEL="Dublin Core Record" MIMETYPE="text/xml"
+            FORMAT_URI="http://www.openarchives.org/OAI/2.0/oai_dc/">
+            <foxml:xmlContent>
+                <oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+                    xmlns:dc="http://purl.org/dc/elements/1.1/"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+                    <dc:title>Funky test object</dc:title>
+                    <dc:identifier>test:3</dc:identifier>
+                </oai_dc:dc>
+            </foxml:xmlContent>
+        </foxml:datastreamVersion>
+    </foxml:datastream>
+    <foxml:datastream ID="descMetadata" FEDORA_URI="info:fedora/test:3/descMetadata" STATE="A"
+        CONTROL_GROUP="M" VERSIONABLE="true">
+        <foxml:datastreamVersion ID="descMetadata.0" LABEL="VRA descriptive metadata"
+            MIMETYPE="text/xml">
+            <foxml:xmlContent>
+                <image xmlns="http://www.vraweb.org/vracore4.htm"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://www.vraweb.org/vracore4.htm http://www.loc.gov/standards/vracore/vra-strict.xsd">
+                    <descriptionSet>
+                        <description>It's a picture of an image.</description>
+                    </descriptionSet>
+                    <titleSet>
+                        <title>Funky image</title>
+                    </titleSet>
+                    <worktypeSet>
+                        <worktype>picture</worktype>
+                    </worktypeSet>
+                </image>
+            </foxml:xmlContent>
+        </foxml:datastreamVersion>
+    </foxml:datastream>
+
+    <foxml:datastream ID="techMetadata" CONTROL_GROUP="M">
+        <foxml:datastreamVersion ID="techMetadata.0" MIMETYPE="text/xml">
+            <foxml:xmlContent>
+                <mix xmlns="http://www.loc.gov/mix/v20"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://www.loc.gov/mix/v20 http://www.loc.gov/standards/mix/mix20/mix20.xsd">
+                    <BasicDigitalObjectInformation>
+                        <FormatDesignation>
+                            <formatName>image</formatName>
+                            <formatVersion>100</formatVersion>
+                        </FormatDesignation>
+                    </BasicDigitalObjectInformation>
+                </mix>
+            </foxml:xmlContent>
+        </foxml:datastreamVersion>
+    </foxml:datastream>
+
+    <foxml:datastream ID="RELS-EXT" FEDORA_URI="info:fedora/test:3/RELS-EXT" STATE="A"
+        CONTROL_GROUP="M" VERSIONABLE="true">
+        <foxml:datastreamVersion ID="RELS-EXT.0" LABEL="Object Relationships" MIMETYPE="text/xml">
+            <foxml:xmlContent>
+                <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+
+                    <rdf:Description rdf:about="info:fedora/test:3">
+                        <hasModel xmlns="info:fedora/fedora-system:def/model#"
+                            rdf:resource="info:fedora/test:hasVRA"/>
+                        <hasModel xmlns="info:fedora/fedora-system:def/model#"
+                            rdf:resource="info:fedora/test:hasMIX"/>
+                    </rdf:Description>
+                </rdf:RDF>
+            </foxml:xmlContent>
+        </foxml:datastreamVersion>
+    </foxml:datastream>
+
+</foxml:digitalObject>

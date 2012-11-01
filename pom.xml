@@ -1,0 +1,49 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>edu.virginia.lib.fedora</groupId>
+	<artifactId>xslt-triplegenerator</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>Fedora XSLT RDF triple generator</name>
+	<url>http://ajs6f.github.com/fcrepo-xslt-triplegenerator</url>
+
+
+	<developers>
+		<developer>
+			<name>A. Soroka</name>
+			<email>ajs6f@virginia.edu</email>
+			<organization>the University of Virginia Library</organization>
+			<organizationUrl>http://www.library.virginia.edu</organizationUrl>
+			<timezone>U.S. Eastern</timezone>
+			<roles>
+				<role>Instigator</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<mailingLists>
+		<mailingList>
+			<name>Contact A. Soroka:</name>
+			<post>ajs6f@virginia.edu</post>
+		</mailingList>
+	</mailingLists>
+
+	<scm>
+		<connection>scm:git://github.com/ajs6f/fcrepo-xslt-triplegenerator.git</connection>
+		<url>https://github.com/ajs6f/fcrepo-xslt-triplegenerator</url>
+	</scm>
+	
+	<modules>
+		<module>fcrepo-xslt-triplegenerator</module>
+		<module>sample-xslt</module>
+		<module>fcrepo-webapp-fedora</module>
+		<module>itests</module>
+	</modules>
+	<description>Generates RDF triples from XML datastreams in Fedora objects.</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<fedora.version>3.6.1</fedora.version>
+	</properties>
+</project>
