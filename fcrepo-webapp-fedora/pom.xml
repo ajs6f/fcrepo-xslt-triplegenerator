@@ -51,7 +51,7 @@
 				<version>0.5</version>
 				<executions>
 					<execution>
-						<phase>site</phase>
+						<phase>site-deploy</phase>
 						<goals>
 							<goal>upload</goal>
 						</goals>
