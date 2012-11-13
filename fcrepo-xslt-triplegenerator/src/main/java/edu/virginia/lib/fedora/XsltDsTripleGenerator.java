@@ -10,20 +10,18 @@ import java.io.StringWriter;
 import java.util.Set;
 
 import javax.xml.transform.Source;
+import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.any23.Any23;
-import org.apache.any23.extractor.ExtractionException;
 import org.apache.any23.source.ByteArrayDocumentSource;
 import org.apache.any23.source.DocumentSource;
 import org.fcrepo.server.errors.DatastreamNotFoundException;
 import org.fcrepo.server.errors.ResourceIndexException;
-import org.fcrepo.server.errors.ServerException;
 import org.fcrepo.server.resourceIndex.TripleGenerator;
 import org.fcrepo.server.storage.DOReader;
 import org.fcrepo.server.storage.types.Datastream;
@@ -36,7 +34,7 @@ import org.xml.sax.InputSource;
 
 /**
  * Component for Fedora Commons repositories that uses XSLT
- * to extract RDF from XML metadata and supply it to Fedora's
+ * to extract RDF from XML metadata and particularly to supply it to Fedora's
  * Resource Index.
  * 
  * @author ajs6f
@@ -48,7 +46,8 @@ public class XsltDsTripleGenerator implements TripleGenerator, InitializingBean 
 
     private String datastreamId;
 
-    private Transformer transformer;
+    // thread-safe compiled version of the XSLT
+    private Templates templates;
 
     private Any23 any23 = new Any23();
 
@@ -82,15 +81,19 @@ public class XsltDsTripleGenerator implements TripleGenerator, InitializingBean 
             datastreamSource =
                     new SAXSource(
                             new InputSource(datastream.getContentStream()));
+            // note that we make the datastream ID and pid available as XSLT parameters
+            Transformer transformer = templates.newTransformer();
+            logger.debug(
+                    "Constructed XSLT transformer, now setting datastreamId parameter to: {} and pid parameter to: {}.",
+                    datastreamId, pid);
+            transformer.setParameter("datastreamId", datastreamId);
             transformer.setParameter("pid", pid);
             transformer.transform(datastreamSource, rdfXmlResult);
-        } catch (ServerException e) {
-            throw new ResourceIndexException(e.getLocalizedMessage(), e);
-        } catch (TransformerException e) {
+        } catch (Exception e) {
             throw new ResourceIndexException(e.getLocalizedMessage(), e);
         }
 
-        // TODO this should be improved to use better streaming;
+        // TODO this should be improved to use better streaming
         String rdfXmlString = rdfXmlResult.getWriter().toString();
         InputStream rdfXmlInputStream =
                 new ByteArrayInputStream(rdfXmlString.getBytes());
@@ -105,9 +108,7 @@ public class XsltDsTripleGenerator implements TripleGenerator, InitializingBean 
                             "http://dummy.absolute.url", "application/rdf+xml");
             any23.extract(source, handler);
             return handler.getTriples();
-        } catch (IOException e) {
-            throw new ResourceIndexException(e.getLocalizedMessage(), e);
-        } catch (ExtractionException e) {
+        } catch (Exception e) {
             throw new ResourceIndexException(e.getLocalizedMessage(), e);
         }
     }
@@ -120,16 +121,11 @@ public class XsltDsTripleGenerator implements TripleGenerator, InitializingBean 
     @Override
     public void afterPropertiesSet() throws TransformerConfigurationException,
             IOException {
-        transformer =
-                TransformerFactory.newInstance().newTransformer(
+        templates =
+                TransformerFactory.newInstance().newTemplates(
                         new SAXSource(new InputSource(xsltInputStreamSource
                                 .getInputStream())));
-        // note that we make the datastream ID available as an XSLT parameter
-        logger.debug(
-                "Constructed XSLT transform, now setting datastreamId parameter to: {}.",
-                datastreamId);
-        transformer.setParameter("datastreamId", datastreamId);
-        logger.debug("Finished constructing XSLT tranformer.");
+        logger.debug("Finished constructing XSLT tranformer template.");
     }
 
     public void setXsltInputStreamSource(InputStreamSource source) {
