@@ -52,6 +52,10 @@
         </rdf:RDF>
     ]]>
             </source>
+            <p>
+                This technique amounts to a kind of
+                <a href="http://answers.semanticweb.com/questions/8336/what-is-skolemization">Skolemization</a>.
+            </p>
         </section>
     </body>
 </document>
