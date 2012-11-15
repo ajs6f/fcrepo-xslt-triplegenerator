@@ -4,10 +4,10 @@
     xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
     <body>
         <section name="Examples of XSLT for use with this component">
-            <p>Examples of simple stylesheets for use with this component are available in the
+            <p>Examples of very simple stylesheets for use with this component are available in the
                 source tree <a
                     href="https://github.com/ajs6f/fcrepo-xslt-triplegenerator/tree/master/sample-xslt/src/main/resources/edu/virginia/lib/fedora/sample_xslt"
-                    >here</a>. </p>
+                    >here</a>. These will be improved as time permits.</p>
         </section>
     </body>
 </document>
