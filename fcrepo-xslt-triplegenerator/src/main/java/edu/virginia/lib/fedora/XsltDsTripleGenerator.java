@@ -73,9 +73,11 @@ public class XsltDsTripleGenerator implements TripleGenerator, InitializingBean 
                     datastreamId, pid);
             Datastream datastream = reader.GetDatastream(datastreamId, null);
             if (datastream == null) {
-                throw new DatastreamNotFoundException(format(
-                        "Failed to find datastream: %1$ in object: %2$",
-                        datastreamId, pid));
+                logger.info(
+                        "Missing datastream for triple extraction:",
+                        new DatastreamNotFoundException(
+                                format("Failed to find datastream: %1$ in object: %2$",
+                                        datastreamId, pid)));
             }
             // now we transform it with the configured XSLT
             datastreamSource =

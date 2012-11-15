@@ -11,7 +11,6 @@
         <menu name="Main">
             <item name="Motivation" href="motivation.html"/>
             <item name="Warnings" href="warnings.html"/>
-            <item name="Usage" href="usage.html"/>
             <item name="Configuration" href="configuration.html"/>
             <item name="XSLT Usage" href="xslt.html"/>
             <item name="Examples" href="examples.html"/>

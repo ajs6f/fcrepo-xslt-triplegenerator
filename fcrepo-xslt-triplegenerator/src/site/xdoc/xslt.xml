@@ -13,13 +13,15 @@
                     <ol>
                         <li>The Fedora URI of the object in question (<code>info:fedora/some:pid123</code>).</li>
                         <li>The Fedora URI of a datastream in the object in question (<code>info:fedora/some:pid123/descMetadata</code>).</li>
-                        <li>An URI that is not used in the triples generated from <i>any</i> other object. This is the most subtle case.
-                            It would be best to use UUIDs or other systems for generating IDs with low likelihood of collision. (For example,
-                        using the pid and datastream of the object as input to a hash function.)</li>
+                        <li>An URI that is not used as a subject in triples generated from <i>any</i> other object. This is the most subtle case.
+                            It would be best to either stick to subjects obeying the first two conditions or to 
+                            use UUIDs or other systems for generating IDs with low likelihood of collision. For example,
+                        using the pid and datastream of the object and a token as input to a deterministic hash function, however simple. (See below for
+                        an example.)</li>
                     </ol>
                 </li>
             </ol>
-            <p>The danger of violating the second condition is that various objects producing triples with subjects that
+            <p>The danger of violating the third condition is that various objects producing triples with subjects that
            collide or conflict with each other will create broken updating behavior for the Resource Index. For an example, take two objects, each of which
             produces a triple: <code><![CDATA[<http://books.org/TomSawyer> hasAuthor <http://people.org/MarkTwain>]]></code>. The Resource Index
             will contain only one copy of the triple (since triples with identical subject, predicate, and object are identical). When
@@ -37,9 +39,9 @@
             <source>
     <![CDATA[
         <rdf:RDF>
+            <!-- we avoid using a blank node -->
+            <xsl:variable name="blanknode1" select="concat('info:fedora/',$pid,'/blank/1')"/>
             <rdf:Description rdf:about="info:fedora/{pid}">
-                <!-- we avoid using a blank node -->
-                <xsl:variable name="blanknode1" select="concat('info:fedora/',$pid,'/blank/1')"/>
                 <myns:somePredicate rdf:resource="{$blanknode1}"/>
             </rdf:Description>
             <rdf:Description rdf:about="{$blanknode1}">

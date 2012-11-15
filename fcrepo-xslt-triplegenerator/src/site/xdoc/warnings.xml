@@ -7,7 +7,7 @@
             <p>
                 This is an experimental module for the Fedora Commons repository framework.
                 Please, <i>please</i> don't use it on a production repository without very
-                thorough testing. Misusing this component (particulary see <a href="xslt.html">here</a>) could damage your
+                thorough testing. Misusing this component (particularly see <a href="xslt.html">here</a>) could damage your
                 Resource Index to the point where only a complete rebuild can restore order.
                 Those of us with large Resource Indexes will shudder at the thought.
             </p>
