@@ -21,18 +21,19 @@
                     </ol>
                 </li>
             </ol>
-            <p>The danger of violating the third condition is that various objects producing triples with subjects that
+            <p>The danger of violating the last condition is that various objects producing triples with subjects that
            collide or conflict with each other will create broken updating behavior for the Resource Index. For an example, take two objects, each of which
-            produces a triple: <code><![CDATA[<http://books.org/TomSawyer> hasAuthor <http://people.org/MarkTwain>]]></code>. The Resource Index
+            produces a triple: <code><![CDATA[<http://books.org/TomSawyer> hasAuthor <http://people.org/MarkTwain>.]]></code>. The Resource Index
             will contain only one copy of the triple (since triples with identical subject, predicate, and object are identical). When
             one of the objects is purged, the triple will be purged. But the other object (still in the repo) will still require the existence
-            of the triple for the Resource Index to accurately portray the contents of the repository.</p>
+            of the triple for the Resource Index to accurately portray the contents of the repository. This is essentially the reason that the normal
+            Fedora API and the conditions of validity for RELS-EXT and RELS-INT do not allow these kinds of subjects.</p>
         </section>
         <section name="Blank nodes">
             <p>
-                For some kinds of complex description in RDF, it is desired to use blank nodes (unidentified nodes). Obviously,
-                this conflicts with the rules given above. Partly because this component and much of Fedora's internal machinery
-                do not transact in RDF documents, but in sets of triples, it's not possible to make guarantees about how blank
+                For some kinds of complex description in RDF, it is desired to use blank nodes (unidentified nodes). Partly
+                because this component and much of Fedora's internal machinery
+                do not deal in RDF documents, but in sets of triples, it's not possible to make guarantees about how blank
                 nodes will be handled. So in places where you might like to use blank nodes, you'll have to use (automatically)
                 generated IDs instead. For example, to insert an automatically identified node into some RDF/XML, you might incant:
             </p>

@@ -11,6 +11,12 @@
                 Resource Index to the point where only a complete rebuild can restore order.
                 Those of us with large Resource Indexes will shudder at the thought.
             </p>
+            <p>
+                The triples you extract and add to the Resource Index using this module will not be visible
+                or modifiable by the normal Fedora API methods and they will not appear in RELS-EXT or RELS-INT.
+                You might think of them as being "orthogonal" to those explicity relationships. They will
+                only exist in the Resource Index and can only be used by the RI services.
+            </p>
         </section>
     </body>
 </document>
