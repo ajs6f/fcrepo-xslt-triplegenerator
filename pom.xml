@@ -44,6 +44,6 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<fedora.version>3.6.1</fedora.version>
+		<fedora.version>3.6.2</fedora.version>
 	</properties>
 </project>
