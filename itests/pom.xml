@@ -27,6 +27,12 @@
 		</dependency>
 		<dependency>
 			<groupId>edu.virginia.lib.fedora</groupId>
+			<artifactId>pubby-demo-webapp</artifactId>
+			<version>${project.version}</version>
+			<type>war</type>
+		</dependency>
+		<dependency>
+			<groupId>edu.virginia.lib.fedora</groupId>
 			<artifactId>fcrepo-xslt-triplegenerator</artifactId>
 			<classifier>with-dependencies</classifier>
 			<version>${project.version}</version>
@@ -37,7 +43,7 @@
 			<version>0.7</version>
 			<classifier>with-dependencies</classifier>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
@@ -87,16 +93,6 @@
 								<cargo.logging>high</cargo.logging>
 							</properties>
 						</configuration>
-						<deployables>
-							<deployable>
-								<groupId>edu.virginia.lib.fedora</groupId>
-								<artifactId>fcrepo-webapp-fedora</artifactId>
-								<type>war</type>
-								<properties>
-									<context>fedora</context>
-								</properties>
-							</deployable>
-						</deployables>
 					</configuration>
 				</plugin>
 			</plugins>
@@ -157,7 +153,7 @@
 
 	<profiles>
 		<profile>
-			<id>tomcat7x</id>
+			<id>tests</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
@@ -180,7 +176,66 @@
 									<log>${project.build.directory}/tomcat.log</log>
 									<timeout>360000</timeout>
 								</container>
+								<deployables>
+									<deployable>
+										<groupId>edu.virginia.lib.fedora</groupId>
+										<artifactId>fcrepo-webapp-fedora</artifactId>
+										<type>war</type>
+										<properties>
+											<context>fedora</context>
+										</properties>
+									</deployable>
+								</deployables>
 							</configuration>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+		<profile>
+			<id>pubby-demo</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.codehaus.cargo</groupId>
+							<artifactId>cargo-maven2-plugin</artifactId>
+							<configuration>
+								<container>
+									<containerId>tomcat7x</containerId>
+									<zipUrlInstaller>
+										<url>http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.41/bin/apache-tomcat-7.0.41.zip</url>
+									</zipUrlInstaller>
+									<systemProperties>
+										<fedora.home>${fedora.home}</fedora.home>
+										<servlet.port>${servlet.port}</servlet.port>
+									</systemProperties>
+									<log>${project.build.directory}/tomcat.log</log>
+									<timeout>360000</timeout>
+								</container>
+								<deployables>
+									<deployable>
+										<groupId>edu.virginia.lib.fedora</groupId>
+										<artifactId>fcrepo-webapp-fedora</artifactId>
+										<type>war</type>
+										<properties>
+											<context>fedora</context>
+										</properties>
+									</deployable>
+									<deployable>
+										<groupId>edu.virginia.lib.fedora</groupId>
+										<artifactId>pubby-demo-webapp</artifactId>
+										<type>war</type>
+										<properties>
+											<context>data</context>
+										</properties>
+									</deployable>
+								</deployables>
+							</configuration>
+
 						</plugin>
 					</plugins>
 				</pluginManagement>

@@ -21,6 +21,8 @@
 			</roles>
 		</developer>
 	</developers>
+	
+	<inceptionYear>2012</inceptionYear>
 
 	<mailingLists>
 		<mailingList>
@@ -39,6 +41,7 @@
 		<module>sample-xslt</module>
 		<module>fcrepo-webapp-fedora</module>
 		<module>itests</module>
+		<module>pubby-demo-webapp</module>
 	</modules>
 	<description>Generates RDF triples from XML datastreams in Fedora objects.</description>
 	<properties>
