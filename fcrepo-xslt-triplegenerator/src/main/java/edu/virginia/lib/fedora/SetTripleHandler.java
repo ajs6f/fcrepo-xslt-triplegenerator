@@ -31,6 +31,9 @@ import com.google.common.collect.ImmutableSet.Builder;
 
 public class SetTripleHandler implements TripleHandler {
 
+	/**
+	 * The set of triples we are collecting.
+	 */
 	private final Builder<Triple> builder = new Builder<Triple>();
 
 	private static final Logger logger = getLogger(SetTripleHandler.class);
@@ -53,11 +56,21 @@ public class SetTripleHandler implements TripleHandler {
 		logger.debug("Added triple: {}", triple.toString());
 	}
 
-	public static URIReference uri(final Value v) {
-		logger.debug("Creating URI from Value: {}", v.stringValue());
+	/**
+	 * @param v
+	 *            A {@link Value}
+	 * @return A {@link SimpleURIReference}
+	 */
+	private static URIReference uri(final Value v) {
 		return new SimpleURIReference(create(v.stringValue()));
 	}
 
+	/**
+	 * @param v
+	 *            A {@link Value}
+	 * @return Either a {@link SimpleURIReference} or {@link SimpleLiteral}
+	 *         depending on whether v is a literal or not
+	 */
 	private static ObjectNode objectValue(final Value v) {
 		try {
 			return new SimpleURIReference(new java.net.URI(v.stringValue()));

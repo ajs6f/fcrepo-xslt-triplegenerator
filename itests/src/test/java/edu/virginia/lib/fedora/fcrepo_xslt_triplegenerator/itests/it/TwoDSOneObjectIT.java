@@ -33,9 +33,9 @@ public class TwoDSOneObjectIT extends XSLTTripleGeneratorTest {
 				.getEntity(String.class);
 		logger.debug("Discovered RDF: \n {}", rdf);
 		assertTrue("Didn't find success marker in: \n" + rdf,
-				rdf.contains("VRA-SUCCESS"));
+				rdf.contains("Funky image"));
 		assertTrue("Didn't find success marker in: \n" + rdf,
-				rdf.contains("MIX-SUCCESS"));
+				rdf.contains("Digital image"));
 		logger.info("Success!");
 	}
 

@@ -53,7 +53,7 @@
                     xsi:schemaLocation="http://www.loc.gov/mix/v20 http://www.loc.gov/standards/mix/mix20/mix20.xsd">
                     <BasicDigitalObjectInformation>
                         <FormatDesignation>
-                            <formatName>image</formatName>
+                            <formatName>Digital image</formatName>
                             <formatVersion>100</formatVersion>
                         </FormatDesignation>
                     </BasicDigitalObjectInformation>

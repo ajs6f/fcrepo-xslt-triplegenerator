@@ -33,7 +33,7 @@ public class OneDSOneObjectIT extends XSLTTripleGeneratorTest {
 				.getEntity(String.class);
 		logger.debug("Discovered RDF: \n {}", rdf);
 		assertTrue("Didn't find success marker in: \n" + rdf,
-				rdf.contains("MODS-SUCCESS"));
+				rdf.contains("Mr. Ward"));
 		logger.info("Success!");
 	}
 

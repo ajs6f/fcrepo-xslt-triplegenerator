@@ -27,9 +27,9 @@
         <foxml:datastreamVersion ID="descMetadata.0"
             LABEL="MODS descriptive metadata" MIMETYPE="text/xml">
             <foxml:xmlContent>
-                <mods xmlns="http://www.loc.gov/mods/v3#" xmlns:mods="http://www.loc.gov/mods/v3"
+                <mods xmlns="http://www.loc.gov/mods/v3" xmlns:mods="http://www.loc.gov/mods/v3"
                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                    xsi:schemaLocation="http://www.loc.gov/mods/v3# http://www.loc.gov/standards/mods/v3/mods-3-3.xsd"
+                    xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd"
                     version="3.3">
                     <titleInfo>
                         <title>Mr. Ward</title>
