@@ -127,7 +127,7 @@ public class SetTripleHandler implements TripleHandler {
 	 */
 	@Override
 	public void setContentLength(final long arg0) {
-		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
 	}
 
 	/*

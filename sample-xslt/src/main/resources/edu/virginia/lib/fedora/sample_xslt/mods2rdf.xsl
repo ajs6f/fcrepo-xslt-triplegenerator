@@ -7,8 +7,7 @@
     <xsl:template match="/">
         <rdf:RDF xmlns:fedora-model="info:fedora/fedora-system:def/model#"
             xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-            xmlns:mods="http://www.loc.gov/mods/v3"
-            xmlns:dc="http://purl.org/dc/elements/1.1"
+            xmlns:mods="http://www.loc.gov/mods/v3" xmlns:dc="http://purl.org/dc/elements/1.1"
             xmlns:dcterms="http://purl.org/dc/terms">
             <!-- we avoid using a blank node -->
             <xsl:variable name="blanknode1" select="concat('info:fedora/',$pid,'/blank/1')"/>
@@ -29,9 +28,9 @@
                     </dc:type>
                 </xsl:for-each>
                 <xsl:for-each select="//mods:subject/mods:topic">
-                    <dc:subject>
+                    <dcterms:subject>
                         <xsl:value-of select="."/>
-                    </dc:subject>
+                    </dcterms:subject>
                 </xsl:for-each>
                 <xsl:for-each select="//mods:subject/mods:name/mods:namePart">
                     <dc:subject>
@@ -43,13 +42,9 @@
                         <xsl:value-of select="."/>
                     </dc:accessRights>
                 </xsl:for-each>
-                <mods:somePredicate rdf:resource="{$blanknode1}"/>
-            </rdf:Description>
-            <rdf:Description rdf:about="{$blanknode1}">
-                <mods:someOtherPredicate rdf:resource="http://example.com/x"/>
-                <mods:aThirdPredicate rdf:resource="http://example.com/y"/>
             </rdf:Description>
         </rdf:RDF>
     </xsl:template>
+
 
 </xsl:stylesheet>

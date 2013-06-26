@@ -3,11 +3,8 @@
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:uva="http://fedora.lib.virginia.edu/relationships#">
     <rdf:Description rdf:about="info:fedora/uva-lib:1038847">
-        <uva:hasCatalogRecordIn rdf:resource="info:fedora/uva-lib:744806"/>
-        <uva:hasPreceedingPage rdf:resource="info:fedora/uva-lib:1038846"/>
-        <uva:isFollowingPageOf rdf:resource="info:fedora/uva-lib:1038846"/>
-        <uva:hasFollowingPage rdf:resource="info:fedora/uva-lib:1038848"/>
-        <uva:isPreceedingPageOf rdf:resource="info:fedora/uva-lib:1038848"/>
-        <fedora-model:hasModel rdf:resource="info:fedora/djatoka:jp2CModel"/>
+        <uva:testPredicate rdf:resource="info:test/resource"/>
+        <uva:testPredicateWithLiteral>literal value</uva:testPredicateWithLiteral>
+        <uva:testPredicateWithLiteral>/relative/uri/</uva:testPredicateWithLiteral>
     </rdf:Description>
 </rdf:RDF>

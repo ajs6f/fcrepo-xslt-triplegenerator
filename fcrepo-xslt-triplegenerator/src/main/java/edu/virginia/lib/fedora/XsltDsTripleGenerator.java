@@ -74,6 +74,7 @@ public class XsltDsTripleGenerator implements TripleGenerator {
 			throws ResourceIndexException {
 
 		Source datastreamSource = null;
+		InputStream dsContentStream = null;
 		final StreamResult rdfXmlResult = new StreamResult(new StringWriter());
 
 		// retrieve the datastream
@@ -86,19 +87,24 @@ public class XsltDsTripleGenerator implements TripleGenerator {
 			if (datastream == null) {
 				logger.info(
 						"Missing datastream for triple extraction:",
-						new DatastreamNotFoundException(
-								format("Failed to find datastream: %1$ in object: %2$",
-										datastreamId, pid)));
+						new DatastreamNotFoundException(format(
+								"Failed to find datastream: %s in object: %s",
+								datastreamId, pid)));
 				/**
 				 * We do not return an empty Set<Triple> at this point to allow
 				 * for the possibility that the XSLT may generate triples based
-				 * only on the pid and dsID.
+				 * only on the pid and dsID. Instead, we generate dummy
+				 * datastream content.
 				 */
+
+				dsContentStream = new ByteArrayInputStream(
+						"<dummy/>".getBytes());
+			} else {
+				dsContentStream = datastream.getContentStream();
 			}
 
 			// now to transform it with the configured XSLT
-			datastreamSource = new SAXSource(new InputSource(
-					datastream.getContentStream()));
+			datastreamSource = new SAXSource(new InputSource(dsContentStream));
 			// make the datastream ID and pid available as XSLT parameters
 			final Transformer transformer = template.newTransformer();
 			logger.debug(

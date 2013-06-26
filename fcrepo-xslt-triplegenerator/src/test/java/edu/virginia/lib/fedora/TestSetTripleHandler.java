@@ -2,6 +2,7 @@ package edu.virginia.lib.fedora;
 
 import static java.net.URI.create;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
@@ -11,6 +12,8 @@ import org.apache.any23.Any23;
 import org.apache.any23.extractor.ExtractionException;
 import org.apache.any23.source.DocumentSource;
 import org.apache.any23.source.FileDocumentSource;
+import org.apache.any23.writer.TripleHandlerException;
+import org.fcrepo.common.rdf.SimpleLiteral;
 import org.fcrepo.common.rdf.SimpleTriple;
 import org.fcrepo.common.rdf.SimpleURIReference;
 import org.jrdf.graph.URIReference;
@@ -33,17 +36,66 @@ public class TestSetTripleHandler {
 	}
 
 	@Test
-	public void testOneTriple() throws IOException, ExtractionException {
+	public void testOneTriple() throws IOException, ExtractionException,
+			TripleHandlerException {
+		logger.info("Running testOneTriple()...");
 		final SetTripleHandler handler = new SetTripleHandler();
 		any23.extract(rdfXmlSource, handler);
 		final SimpleTriple triple = new SimpleTriple(
 				uri("info:fedora/uva-lib:1038847"),
-				uri("http://fedora.lib.virginia.edu/relationships#isFollowingPageOf"),
-				uri("info:fedora/uva-lib:1038846"));
+				uri("http://fedora.lib.virginia.edu/relationships#testPredicate"),
+				uri("info:test/resource"));
 		logger.info("Looking for triple: {}", triple.toString());
 		assertTrue("Oh, no! Didn't find the triple", handler.getTriples()
 				.contains(triple));
 		logger.info("Found it!");
+		handler.close();
+	}
+
+	@Test
+	public void testOneTripleWithLiteral() throws IOException,
+			ExtractionException, TripleHandlerException {
+		logger.info("Running testOneTripleWithLiteral()...");
+		final SetTripleHandler handler = new SetTripleHandler();
+		any23.extract(rdfXmlSource, handler);
+		final SimpleTriple triple = new SimpleTriple(
+				uri("info:fedora/uva-lib:1038847"),
+				uri("http://fedora.lib.virginia.edu/relationships#testPredicateWithLiteral"),
+				new SimpleLiteral("literal value"));
+		logger.info("Looking for triple: {}", triple.toString());
+		assertTrue("Oh, no! Didn't find the triple", handler.getTriples()
+				.contains(triple));
+		logger.info("Found it!");
+		handler.close();
+	}
+
+	@Test
+	public void testOneTripleWithRelativeUri() throws IOException,
+			ExtractionException, TripleHandlerException {
+		logger.info("Running testOneTripleWithRelativeUri()...");
+		final SetTripleHandler handler = new SetTripleHandler();
+		any23.extract(rdfXmlSource, handler);
+		final SimpleTriple triple = new SimpleTriple(
+				uri("info:fedora/uva-lib:1038847"),
+				uri("http://fedora.lib.virginia.edu/relationships#testPredicateWithLiteral"),
+				new SimpleLiteral("/relative/uri/"));
+		logger.info("Looking for triple: {}", triple.toString());
+		assertTrue("Oh, no! Didn't find the triple", handler.getTriples()
+				.contains(triple));
+		logger.info("Found it!");
+		handler.close();
+	}
+
+	@Test
+	public void testSetContentLength() {
+		logger.info("Running testSetContentLength()...");
+		final SetTripleHandler handler = new SetTripleHandler();
+		try {
+			handler.setContentLength(0);
+			fail("setContentLength() didn't throw an UnsupportedOperationException!");
+		} catch (final UnsupportedOperationException e) {
+			logger.info("Correct behavior for setContentLength()");
+		}
 	}
 
 	private static URIReference uri(final String v) {
