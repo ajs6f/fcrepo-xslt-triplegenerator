@@ -38,16 +38,15 @@
 			<classifier>with-dependencies</classifier>
 		</dependency>
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-jdk14</artifactId>
-			<version>1.6.6</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava-io</artifactId>
 			<version>r03</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.0.13</version>
 		</dependency>
 	</dependencies>
 
@@ -125,7 +124,7 @@
 								</property>
 								<property>
 									<name>foxml.dir</name>
-									<value>${foxml.dir}</value>	
+									<value>${foxml.dir}</value>
 								</property>
 							</systemProperties>
 						</configuration>

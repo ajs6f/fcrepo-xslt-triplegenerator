@@ -136,8 +136,14 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.any23</groupId>
-			<artifactId>any23-core</artifactId>
-			<version>0.7.1-incubating-SNAPSHOT</version>
+			<artifactId>apache-any23-core</artifactId>
+			<version>0.8.1-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-jdk14</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -157,11 +163,12 @@
 		<repository>
 			<id>apache-snapshots</id>
 			<url>https://repository.apache.org/content/repositories/snapshots</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
-		<repository>
-			<id>any23-svn</id>
-			<url>https://svn.apache.org/repos/asf/any23/repo-ext</url>
-		</repository>
+		<!-- <repository> <id>any23-svn</id> <url>https://svn.apache.org/repos/asf/any23/repo-ext</url> 
+			</repository> -->
 	</repositories>
 
 	<reporting>

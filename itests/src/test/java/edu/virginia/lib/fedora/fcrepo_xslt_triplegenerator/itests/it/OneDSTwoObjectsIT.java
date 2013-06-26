@@ -1,7 +1,9 @@
 
 package edu.virginia.lib.fedora.fcrepo_xslt_triplegenerator.itests.it;
 
+import static com.yourmediashelf.fedora.client.FedoraClient.riSearch;
 import static org.junit.Assert.assertTrue;
+import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,15 +12,12 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.yourmediashelf.fedora.client.FedoraClient;
 import com.yourmediashelf.fedora.client.FedoraClientException;
 
 public class OneDSTwoObjectsIT extends XSLTTripleGeneratorTest {
 
-    private static final Logger logger = LoggerFactory
-            .getLogger(OneDSTwoObjectsIT.class);
+	private static final Logger logger = getLogger(OneDSTwoObjectsIT.class);
     
     @Before
     public void ingestTwo() throws FedoraClientException, IOException {
@@ -30,10 +29,11 @@ public class OneDSTwoObjectsIT extends XSLTTripleGeneratorTest {
     @Test
     public void testFirstObject() throws FedoraClientException {
         logger.info("Running OneDSTwoObjectsIT.testFirstObject()...");
-        String rdf =
-                FedoraClient.riSearch("DESCRIBE <info:fedora/" + pids.get(0) + ">")
+        final String rdf =
+                riSearch("DESCRIBE <info:fedora/" + pids.get(0) + ">")
                         .type("triples").format("rdf/xml").flush(true)
                         .execute().getEntity(String.class);
+        logger.debug("Discovered RDF: \n {}", rdf);
         assertTrue("Didn't find success marker in: \n" + rdf, rdf
                 .contains("MODS-SUCCESS"));
         logger.info("Success!");
@@ -42,10 +42,11 @@ public class OneDSTwoObjectsIT extends XSLTTripleGeneratorTest {
     @Test
     public void testSecondObject() throws FedoraClientException {
         logger.info("Running OneDSTwoObjectsIT.testSecondObject()...");
-        String rdf =
-                FedoraClient.riSearch("DESCRIBE <info:fedora/" + pids.get(1) + ">")
+        final String rdf =
+                riSearch("DESCRIBE <info:fedora/" + pids.get(1) + ">")
                         .type("triples").format("rdf/xml").flush(true)
                         .execute().getEntity(String.class);
+        logger.debug("Discovered RDF: \n {}", rdf);
         assertTrue("Didn't find success marker in: \n" + rdf, rdf
                 .contains("VRA-SUCCESS"));
         logger.info("Success!");

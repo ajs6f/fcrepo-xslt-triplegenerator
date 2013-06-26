@@ -1,7 +1,8 @@
-
 package edu.virginia.lib.fedora;
 
+import static java.net.URI.create;
 import static org.junit.Assert.assertTrue;
+import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,39 +17,37 @@ import org.jrdf.graph.URIReference;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class TestSetTripleHandler {
-    
-    private static final Logger logger = LoggerFactory
-            .getLogger(TestSetTripleHandler.class);
 
-    Any23 any23 = new Any23();
+	private static final Logger logger = getLogger(TestSetTripleHandler.class);
 
-    DocumentSource rdfXmlSource;
+	private final Any23 any23 = new Any23();
 
-    @Before
-    public void setUp() {
-        rdfXmlSource = new FileDocumentSource(new File("target/test-classes/rdf.xml"));
-    }
+	DocumentSource rdfXmlSource;
 
-    @Test
-    public void testOneTriple() throws IOException, ExtractionException {
-        SetTripleHandler handler = new SetTripleHandler();
-        any23.extract(rdfXmlSource, handler);
-        SimpleTriple triple =
-                new SimpleTriple(
-                        uri("info:fedora/uva-lib:1038847"),
-                        uri("http://fedora.lib.virginia.edu/relationships#isFollowingPageOf"),
-                        uri("info:fedora/uva-lib:1038846"));
-        logger.info("Looking for triple: {}",triple.toString());
-        assertTrue("Oh, no! Didn't find the triple", handler.getTriples()
-                .contains(triple));
-        logger.info("Found it!");
-    }
+	@Before
+	public void setUp() {
+		rdfXmlSource = new FileDocumentSource(new File(
+				"target/test-classes/rdf.xml"));
+	}
 
-    public static URIReference uri(String v) {
-        return new SimpleURIReference(java.net.URI.create(v));
-    }
+	@Test
+	public void testOneTriple() throws IOException, ExtractionException {
+		final SetTripleHandler handler = new SetTripleHandler();
+		any23.extract(rdfXmlSource, handler);
+		final SimpleTriple triple = new SimpleTriple(
+				uri("info:fedora/uva-lib:1038847"),
+				uri("http://fedora.lib.virginia.edu/relationships#isFollowingPageOf"),
+				uri("info:fedora/uva-lib:1038846"));
+		logger.info("Looking for triple: {}", triple.toString());
+		assertTrue("Oh, no! Didn't find the triple", handler.getTriples()
+				.contains(triple));
+		logger.info("Found it!");
+	}
+
+	public static URIReference uri(final String v) {
+		return new SimpleURIReference(create(v));
+	}
 
 }

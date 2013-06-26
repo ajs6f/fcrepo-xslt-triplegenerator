@@ -33,7 +33,7 @@
 		<connection>scm:git://github.com/ajs6f/fcrepo-xslt-triplegenerator.git</connection>
 		<url>https://github.com/ajs6f/fcrepo-xslt-triplegenerator</url>
 	</scm>
-	
+
 	<modules>
 		<module>fcrepo-xslt-triplegenerator</module>
 		<module>sample-xslt</module>
@@ -46,4 +46,18 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<fedora.version>3.6.2</fedora.version>
 	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

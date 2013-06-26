@@ -64,15 +64,7 @@
     </relatedItem>
     <identifier type="legacy" displayLabel="Negative Number">H03334B</identifier>
     <identifier type="pid" displayLabel="UVA Library Fedora Repository PID">uva-lib:1038847</identifier>
-    <identifier type="legacy" displayLabel="Special Collections legacy database record number" invalid="yes">36853</identifier>
     <identifier type="uri" displayLabel="Accessible index record displayed in VIRGO">uva-lib:1038847</identifier>
-    <identifier type="local" displayLabel="Digitization Services Tracksys Unit ID">7688</identifier>
-    <identifier type="local" displayLabel="Digitization Services Tracksys MasterFile ID">365105</identifier>
-    <identifier type="local" displayLabel="Digitization Services Archive Filename">000007688_0003.tif</identifier>
-    <identifier type="accessionNumber" displayLabel="Collection Accession Number">MSS 9862</identifier>
-    <location>
-        <url/>
-    </location>
     <location>
         <physicalLocation>Special Collections, University of Virginia Library, Charlottesville, Va.</physicalLocation>
     </location>

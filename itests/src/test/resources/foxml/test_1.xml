@@ -17,42 +17,19 @@
                 <oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
                     xmlns:dc="http://purl.org/dc/elements/1.1/"
                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                    xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
-                    <dc:title>Mr. Ward</dc:title>
-                    <dc:subject>Photography</dc:subject>
-                    <dc:subject>Portraits</dc:subject>
-                    <dc:subject>Horse-drawn vehicles</dc:subject>
-                    <dc:subject>Animals</dc:subject>
-                    <dc:subject>Horses</dc:subject>
-                    <dc:subject>Holsinger Studio (Charlottesville, Va.)</dc:subject>
-                    <dc:description>(Horse)</dc:description>
-                    <dc:description>Negative X01419EB depicts the same subject</dc:description>
-                    <dc:contributor>Holsinger, Rufus W., 1866-1930</dc:contributor>
-                    <dc:type>Collection</dc:type>
-                    <dc:type>StillImage</dc:type>
-                    <dc:type>Photographs</dc:type>
-                    <dc:format>Glass negatives</dc:format>
-                    <dc:format>image/jpeg</dc:format>
-                    <dc:identifier>X01419EB</dc:identifier>
-                    <dc:identifier>test:1</dc:identifier>
-                    <dc:identifier>39698</dc:identifier>
-                    <dc:identifier>7699</dc:identifier>
-                    <dc:identifier>367471</dc:identifier>
-                    <dc:identifier>000007699_0169.tif</dc:identifier>
-                    <dc:rights>This image may be reproduced without additional permission but must
-                        be credited © Rector and Visitors of the University of Virginia</dc:rights>
-                </oai_dc:dc>
+                    xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd"
+                > </oai_dc:dc>
             </foxml:xmlContent>
         </foxml:datastreamVersion>
     </foxml:datastream>
     <foxml:datastream ID="descMetadata" FEDORA_URI="info:fedora/test:1/descMetadata" STATE="A"
         CONTROL_GROUP="M" VERSIONABLE="true">
         <foxml:datastreamVersion ID="descMetadata.0"
-            LABEL="Hydra-compliant MODS descriptive metadata" MIMETYPE="text/xml">
+            LABEL="MODS descriptive metadata" MIMETYPE="text/xml">
             <foxml:xmlContent>
-                <mods xmlns="http://www.loc.gov/mods/v3" xmlns:mods="http://www.loc.gov/mods/v3"
+                <mods xmlns="http://www.loc.gov/mods/v3#" xmlns:mods="http://www.loc.gov/mods/v3"
                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                    xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd"
+                    xsi:schemaLocation="http://www.loc.gov/mods/v3# http://www.loc.gov/standards/mods/v3/mods-3-3.xsd"
                     version="3.3">
                     <titleInfo>
                         <title>Mr. Ward</title>
@@ -77,8 +54,6 @@
                         <note displayLabel="size inches">8x10</note>
                         <note displayLabel="condition">Plate is in good condition.</note>
                     </physicalDescription>
-                    <note displayLabel="staff">(Horse)</note>
-                    <note displayLabel="staff">Negative X01419EB depicts the same subject</note>
                     <subject authority="lcsh">
                         <topic>Photography</topic>
                     </subject>
@@ -117,38 +92,17 @@
                             </place>
                         </originInfo>
                     </relatedItem>
-                    <identifier type="legacy" displayLabel="Negative Number">X01419EB</identifier>
-                    <identifier type="pid" displayLabel="UVA Library Fedora Repository PID">uva-lib:1041213</identifier>
-                    <identifier type="legacy" displayLabel="Special Collections legacy database record number" invalid="yes">39698</identifier>
-                    <identifier type="uri" displayLabel="Accessible index record displayed in VIRGO">uva-lib:1041213</identifier>
-                    <identifier type="local" displayLabel="Digitization Services Tracksys Unit ID">7699</identifier>
-                    <identifier type="local" displayLabel="Digitization Services Tracksys MasterFile ID">367471</identifier>
-                    <identifier type="local" displayLabel="Digitization Services Archive Filename">000007699_0169.tif</identifier>
                     <location>
-                        <url/>
-                    </location>
-                    <location>
-                        <physicalLocation>Special Collections, University of Virginia Library, Charlottesville, Va.</physicalLocation>
+                        <physicalLocation>Special Collections, University of Virginia Library,
+                            Charlottesville, Va.</physicalLocation>
                     </location>
                     <location>
                         <physicalLocation authority="oclcorg">VA@</physicalLocation>
                     </location>
-                    <accessCondition type="restrictionOnAccess"
-                        displayLabel="Access to the Collection"/>
                     <accessCondition type="useAndReproduction" displayLabel="Use of the Collection"
                         >This image may be reproduced without additional permission but must be
                         credited © Rector and Visitors of the University of
-                        Virginia</accessCondition>
-                    <recordInfo>
-                        <recordContentSource>University of Virginia Library</recordContentSource>
-                        <recordCreationDate encoding="iso8601">2007-03-20T13:50:33</recordCreationDate>
-                        <recordChangeDate encoding="iso8601">2009-07-23T10:35:57.04-04:00</recordChangeDate>
-                        <recordOrigin>University of Virginia Library</recordOrigin>
-                        <languageOfCataloging>
-                            <languageTerm type="code" authority="iso639-2b">eng</languageTerm>
-                        </languageOfCataloging>
-                    </recordInfo>
-                </mods>
+                        Virginia</accessCondition>s </mods>
             </foxml:xmlContent>
         </foxml:datastreamVersion>
     </foxml:datastream>
@@ -158,31 +112,10 @@
         <foxml:datastreamVersion ID="RELS-EXT.0" LABEL="Object Relationships" MIMETYPE="text/xml">
             <foxml:xmlContent>
                 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-
                     <rdf:Description rdf:about="info:fedora/test:1">
-                        <hasCatalogRecordIn xmlns="http://fedora.lib.virginia.edu/relationships#"
-                            rdf:resource="info:fedora/uva-lib:744806"/>
-                        <hasPreceedingPage xmlns="http://fedora.lib.virginia.edu/relationships#"
-                            rdf:resource="info:fedora/uva-lib:1041212"/>
-                        <isFollowingPageOf xmlns="http://fedora.lib.virginia.edu/relationships#"
-                            rdf:resource="info:fedora/uva-lib:1041212"/>
-                        <hasFollowingPage xmlns="http://fedora.lib.virginia.edu/relationships#"
-                            rdf:resource="info:fedora/uva-lib:1041214"/>
-                        <isPreceedingPageOf xmlns="http://fedora.lib.virginia.edu/relationships#"
-                            rdf:resource="info:fedora/uva-lib:1041214"/>
-                        <hasModel xmlns="info:fedora/fedora-system:def/model#"
-                            rdf:resource="info:fedora/uva-lib:indexableCModel"/>
-                        <hasModel xmlns="info:fedora/fedora-system:def/model#"
-                            rdf:resource="info:fedora/hydra-cModel:commonMetadata"/>
-                        <hasModel xmlns="info:fedora/fedora-system:def/model#"
-                            rdf:resource="info:fedora/hydra-cModel:genericContent"/>
-                        <hasModel xmlns="info:fedora/fedora-system:def/model#"
-                            rdf:resource="info:fedora/djatoka:jp2CModel"/>
-                        <hasModel xmlns="info:fedora/fedora-system:def/model#"
-                            rdf:resource="info:fedora/editable:descMetadata"/>
                         <hasModel xmlns="info:fedora/fedora-system:def/model#"
                             rdf:resource="info:fedora/test:hasMODS"/>
-                    </rdf:Description>         
+                    </rdf:Description>
                 </rdf:RDF>
             </foxml:xmlContent>
         </foxml:datastreamVersion>

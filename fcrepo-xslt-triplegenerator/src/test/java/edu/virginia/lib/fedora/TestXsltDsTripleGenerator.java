@@ -1,8 +1,10 @@
 
 package edu.virginia.lib.fedora;
 
+import static java.net.URI.create;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
+import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -24,14 +26,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestXsltDsTripleGenerator {
 
-    private static final Logger logger = LoggerFactory
-            .getLogger(TestXsltDsTripleGenerator.class);
+    private static final Logger logger = getLogger(TestXsltDsTripleGenerator.class);
 
     @Mock
     private Datastream datastream;
@@ -43,31 +43,31 @@ public class TestXsltDsTripleGenerator {
     public void testCatchOneTriple() throws ServerException, IOException,
             TransformerConfigurationException {
 
-        String xsltFile = "target/test-classes/mods2rdf.xsl";
-        String dsFile = "target/test-classes/mods.xml";
+        final String xsltFile = "target/test-classes/mods2rdf.xsl";
+        final String dsFile = "target/test-classes/mods.xml";
 
         when(reader.GetDatastream("MODS", null)).thenReturn(datastream);
         when(datastream.getContentStream()).thenReturn(
                 new FileInputStream(dsFile));
 
-        InputStream dsLogStream = new FileInputStream(dsFile);
+        final InputStream dsLogStream = new FileInputStream(dsFile);
         logger.debug("Using mock datastream: {}", IOUtils.toString(dsLogStream));
         dsLogStream.close();
 
-        XsltDsTripleGenerator triplegen = new XsltDsTripleGenerator();
+        final XsltDsTripleGenerator triplegen = new XsltDsTripleGenerator();
         triplegen.setDatastreamId("MODS");
 
         triplegen.setXsltInputStreamSource(new FileSystemResource(xsltFile));
 
-        InputStream xsltLogStream = new FileInputStream(xsltFile);
+        final InputStream xsltLogStream = new FileInputStream(xsltFile);
         logger.debug("Using XSLT transform: {}", IOUtils
                 .toString(xsltLogStream));
         xsltLogStream.close();
 
         triplegen.afterPropertiesSet();
 
-        Set<Triple> triples = triplegen.getTriplesForObject(reader);
-        SimpleTriple triple =
+        final Set<Triple> triples = triplegen.getTriplesForObject(reader);
+        final SimpleTriple triple =
                 new SimpleTriple(
                         uri("info:fedora/uva-lib:1038847"),
                         uri("http://fedora.lib.virginia.edu/relationships#isFollowingPageOf"),
@@ -77,8 +77,8 @@ public class TestXsltDsTripleGenerator {
         logger.info("Found it!");
     }
 
-    public static URIReference uri(String v) {
-        return new SimpleURIReference(java.net.URI.create(v));
+    public static URIReference uri(final String v) {
+        return new SimpleURIReference(create(v));
     }
 
 }
