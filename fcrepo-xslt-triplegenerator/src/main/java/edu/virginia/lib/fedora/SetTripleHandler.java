@@ -68,15 +68,21 @@ public class SetTripleHandler implements TripleHandler {
 	/**
 	 * @param v
 	 *            A {@link Value}
-	 * @return Either a {@link SimpleURIReference} or {@link SimpleLiteral}
-	 *         depending on whether v is a literal or not
+	 * @return Either a {@link SimpleLiteral} or {@link SimpleURIReference}
+	 *         depending on whether v seems to be a literal or not
 	 */
-	private static ObjectNode objectValue(final Value v) {
+	private static ObjectNode objectValue(final Value value) {
+		final String v = value.stringValue();
 		try {
-			return new SimpleURIReference(new java.net.URI(v.stringValue()));
+			final java.net.URI uri = new java.net.URI(v);
+			if (uri.isAbsolute()) {
+				return new SimpleURIReference(uri);
+			} else {
+				// assume that it's a literal that resembles an URI
+				return new SimpleLiteral(v);
+			}
 		} catch (final URISyntaxException e) {
-			// the RDF object is a literal, not an URI
-			return new SimpleLiteral(v.stringValue());
+			return new SimpleLiteral(v);
 		}
 	}
 

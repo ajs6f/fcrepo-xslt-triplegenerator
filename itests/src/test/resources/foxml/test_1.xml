@@ -24,8 +24,8 @@
     </foxml:datastream>
     <foxml:datastream ID="descMetadata" FEDORA_URI="info:fedora/test:1/descMetadata" STATE="A"
         CONTROL_GROUP="M" VERSIONABLE="true">
-        <foxml:datastreamVersion ID="descMetadata.0"
-            LABEL="MODS descriptive metadata" MIMETYPE="text/xml">
+        <foxml:datastreamVersion ID="descMetadata.0" LABEL="MODS descriptive metadata"
+            MIMETYPE="text/xml">
             <foxml:xmlContent>
                 <mods xmlns="http://www.loc.gov/mods/v3" xmlns:mods="http://www.loc.gov/mods/v3"
                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -101,8 +101,9 @@
                     </location>
                     <accessCondition type="useAndReproduction" displayLabel="Use of the Collection"
                         >This image may be reproduced without additional permission but must be
-                        credited © Rector and Visitors of the University of
-                        Virginia</accessCondition>s </mods>
+                        credited (C) Rector and Visitors of the University of
+                        Virginia</accessCondition>
+                </mods>
             </foxml:xmlContent>
         </foxml:datastreamVersion>
     </foxml:datastream>

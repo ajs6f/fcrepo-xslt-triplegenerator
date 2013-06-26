@@ -46,7 +46,7 @@ public class TestSetTripleHandler {
 		logger.info("Found it!");
 	}
 
-	public static URIReference uri(final String v) {
+	private static URIReference uri(final String v) {
 		return new SimpleURIReference(create(v));
 	}
 

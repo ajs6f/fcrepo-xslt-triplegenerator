@@ -1,7 +1,7 @@
-
 package edu.virginia.lib.fedora;
 
 import static java.lang.String.format;
+import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -9,135 +9,149 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
 import javax.xml.transform.Source;
 import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.any23.Any23;
+import org.apache.any23.extractor.ExtractionException;
 import org.apache.any23.source.ByteArrayDocumentSource;
 import org.apache.any23.source.DocumentSource;
 import org.fcrepo.server.errors.DatastreamNotFoundException;
 import org.fcrepo.server.errors.ResourceIndexException;
+import org.fcrepo.server.errors.ServerException;
 import org.fcrepo.server.resourceIndex.TripleGenerator;
 import org.fcrepo.server.storage.DOReader;
 import org.fcrepo.server.storage.types.Datastream;
 import org.jrdf.graph.Triple;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.InputStreamSource;
 import org.xml.sax.InputSource;
 
 /**
- * Component for Fedora Commons repositories that uses XSLT
- * to extract RDF from XML metadata and particularly to supply it to Fedora's
- * Resource Index.
+ * Component for Fedora Commons repositories that uses XSLT to extract RDF from
+ * XML metadata for Fedora's Resource Index.
  * 
  * @author ajs6f
  */
 
-public class XsltDsTripleGenerator implements TripleGenerator, InitializingBean {
+public class XsltDsTripleGenerator implements TripleGenerator {
 
-    private InputStreamSource xsltInputStreamSource;
+	/**
+	 * A Spring {@link InputStreamSource} from which to get the XSLT.
+	 */
+	private InputStreamSource xsltInputStreamSource;
 
-    private String datastreamId;
+	/**
+	 * The datastream against which to transform.
+	 */
+	private String datastreamId;
 
-    // thread-safe compiled version of the XSLT
-    private Templates templates;
+	/**
+	 * Thread-safe compiled version of the XSLT.
+	 */
+	private Templates template;
 
-    private Any23 any23 = new Any23();
+	private final Any23 any23 = new Any23();
 
-    private static final Logger logger = LoggerFactory
-            .getLogger(XsltDsTripleGenerator.class);
+	private static final Logger logger = getLogger(XsltDsTripleGenerator.class);
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * org.fcrepo.server.resourceIndex.TripleGenerator#getTriplesForObject(org
-     * .fcrepo.server.storage.DOReader)
-     */
-    @Override
-    public Set<Triple> getTriplesForObject(DOReader reader)
-            throws ResourceIndexException {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.fcrepo.server.resourceIndex.TripleGenerator#getTriplesForObject(org
+	 * .fcrepo.server.storage.DOReader)
+	 */
+	@Override
+	public Set<Triple> getTriplesForObject(final DOReader reader)
+			throws ResourceIndexException {
 
-        Source datastreamSource = null;
-        StreamResult rdfXmlResult = new StreamResult(new StringWriter());
-        // first we retrieve the datastream
-        try {
-            String pid = reader.GetObjectPID();
-            logger.debug("Retrieving datastream: {} from object: {}",
-                    datastreamId, pid);
-            Datastream datastream = reader.GetDatastream(datastreamId, null);
-            if (datastream == null) {
-                logger.info(
-                        "Missing datastream for triple extraction:",
-                        new DatastreamNotFoundException(
-                                format("Failed to find datastream: %1$ in object: %2$",
-                                        datastreamId, pid)));
-            }
-            // now we transform it with the configured XSLT
-            datastreamSource =
-                    new SAXSource(
-                            new InputSource(datastream.getContentStream()));
-            // note that we make the datastream ID and pid available as XSLT parameters
-            Transformer transformer = templates.newTransformer();
-            logger.debug(
-                    "Constructed XSLT transformer, now setting datastreamId parameter to: {} and pid parameter to: {}.",
-                    datastreamId, pid);
-            transformer.setParameter("datastreamId", datastreamId);
-            transformer.setParameter("pid", pid);
-            transformer.transform(datastreamSource, rdfXmlResult);
-        } catch (Exception e) {
-            throw new ResourceIndexException(e.getLocalizedMessage(), e);
-        }
+		Source datastreamSource = null;
+		final StreamResult rdfXmlResult = new StreamResult(new StringWriter());
 
-        // TODO this should be improved to use better streaming
-        String rdfXmlString = rdfXmlResult.getWriter().toString();
-        InputStream rdfXmlInputStream =
-                new ByteArrayInputStream(rdfXmlString.getBytes());
-        // handler will collect emitted triples into a set
-        SetTripleHandler handler = new SetTripleHandler();
+		// retrieve the datastream
+		try {
+			final String pid = reader.GetObjectPID();
+			logger.debug("Retrieving datastream: {} from object: {}",
+					datastreamId, pid);
+			final Datastream datastream = reader.GetDatastream(datastreamId,
+					null);
+			if (datastream == null) {
+				logger.info(
+						"Missing datastream for triple extraction:",
+						new DatastreamNotFoundException(
+								format("Failed to find datastream: %1$ in object: %2$",
+										datastreamId, pid)));
+				/**
+				 * We do not return an empty Set<Triple> at this point to allow
+				 * for the possibility that the XSLT may generate triples based
+				 * only on the pid and dsID.
+				 */
+			}
 
-        // the actual extraction of triples
-        logger.debug("Extracting triples from: {}", rdfXmlString);
-        try {
-            DocumentSource source =
-                    new ByteArrayDocumentSource(rdfXmlInputStream,
-                            "http://dummy.absolute.url", "application/rdf+xml");
-            any23.extract(source, handler);
-            return handler.getTriples();
-        } catch (Exception e) {
-            throw new ResourceIndexException(e.getLocalizedMessage(), e);
-        }
-    }
+			// now to transform it with the configured XSLT
+			datastreamSource = new SAXSource(new InputSource(
+					datastream.getContentStream()));
+			// make the datastream ID and pid available as XSLT parameters
+			final Transformer transformer = template.newTransformer();
+			logger.debug(
+					"Constructed XSLT transformer, now setting datastreamId parameter to: {} and pid parameter to: {}.",
+					datastreamId, pid);
+			transformer.setParameter("datastreamId", datastreamId);
+			transformer.setParameter("pid", pid);
+			transformer.transform(datastreamSource, rdfXmlResult);
+		} catch (final TransformerException e) {
+			throw new ResourceIndexException(e.getLocalizedMessage(), e);
+		} catch (final ServerException e) {
+			throw new ResourceIndexException(e.getLocalizedMessage(), e);
+		}
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-     */
-    @Override
-    public void afterPropertiesSet() throws TransformerConfigurationException,
-            IOException {
-        templates =
-                TransformerFactory.newInstance().newTemplates(
-                        new SAXSource(new InputSource(xsltInputStreamSource
-                                .getInputStream())));
-        logger.debug("Finished constructing XSLT tranformer template.");
-    }
+		// TODO use better streaming when Any23 provides for it
+		final String rdfXmlString = rdfXmlResult.getWriter().toString();
+		final InputStream rdfXmlInputStream = new ByteArrayInputStream(
+				rdfXmlString.getBytes());
+		// handler will collect emitted triples into a set
+		final SetTripleHandler handler = new SetTripleHandler();
+		logger.debug("Extracting triples from: {}", rdfXmlString);
+		try {
+			final DocumentSource source = new ByteArrayDocumentSource(
+					rdfXmlInputStream, "http://dummy.absolute.url",
+					"application/rdf+xml");
+			any23.extract(source, handler);
+			rdfXmlInputStream.close();
+			return handler.getTriples();
+		} catch (final IOException e) {
+			throw new ResourceIndexException(e.getLocalizedMessage(), e);
+		} catch (final ExtractionException e) {
+			throw new ResourceIndexException(e.getLocalizedMessage(), e);
+		}
+	}
 
-    public void setXsltInputStreamSource(InputStreamSource source) {
-        this.xsltInputStreamSource = source;
-        logger.debug("Set XSLT source to: {}", source.toString());
-    }
+	@PostConstruct
+	public void compileXSLT() throws TransformerConfigurationException,
+			IOException {
+		final InputStream stream = xsltInputStreamSource.getInputStream();
+		template = TransformerFactory.newInstance().newTemplates(
+				new SAXSource(new InputSource(stream)));
+		stream.close();
+		logger.debug("Finished constructing XSLT tranformer template.");
+	}
 
-    public void setDatastreamId(String dsID) {
-        this.datastreamId = dsID;
-        logger.debug("Set datastream ID to: {}", dsID);
-    }
+	public void setXsltInputStreamSource(final InputStreamSource source) {
+		this.xsltInputStreamSource = source;
+		logger.debug("Set XSLT source to: {}", source.toString());
+	}
+
+	public void setDatastreamId(final String dsID) {
+		this.datastreamId = dsID;
+		logger.debug("Set datastream ID to: {}", dsID);
+	}
 
 }

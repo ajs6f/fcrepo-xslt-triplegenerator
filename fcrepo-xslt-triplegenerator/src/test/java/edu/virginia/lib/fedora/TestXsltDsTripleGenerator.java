@@ -64,7 +64,7 @@ public class TestXsltDsTripleGenerator {
                 .toString(xsltLogStream));
         xsltLogStream.close();
 
-        triplegen.afterPropertiesSet();
+        triplegen.compileXSLT();
 
         final Set<Triple> triples = triplegen.getTriplesForObject(reader);
         final SimpleTriple triple =
