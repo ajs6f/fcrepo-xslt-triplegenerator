@@ -18,6 +18,7 @@ import org.fcrepo.common.rdf.SimpleTriple;
 import org.fcrepo.common.rdf.SimpleURIReference;
 import org.fcrepo.server.errors.ResourceIndexException;
 import org.fcrepo.server.errors.ServerException;
+import org.fcrepo.server.errors.StreamIOException;
 import org.fcrepo.server.storage.DOReader;
 import org.fcrepo.server.storage.types.Datastream;
 import org.jrdf.graph.Triple;
@@ -143,7 +144,45 @@ public class TestXsltDsTripleGenerator {
 		logger.info("Found it!");
 	}
 
-	public static URIReference uri(final String v) {
+	@Test
+	public void testCatchOneTripleWithUnretrievableDatastream()
+			throws ServerException, IOException,
+			TransformerConfigurationException {
+		logger.info("Running testCatchOneTripleWithoutDatastream()...");
+		final String xsltFile = "target/test-classes/mods2rdf.xsl";
+		when(reader.GetDatastream("MODS", null))
+				.thenThrow(
+						new StreamIOException(
+								"Dummy exception representing a failure to retrieve datastream content."));
+		when(reader.GetObjectPID()).thenReturn("test");
+
+		final XsltDsTripleGenerator triplegen = new XsltDsTripleGenerator();
+		triplegen.setDatastreamId("MODS");
+
+		triplegen.setXsltInputStreamSource(new FileSystemResource(xsltFile));
+
+		final InputStream xsltLogStream = new FileInputStream(xsltFile);
+		logger.debug("Using XSLT transform: {}",
+				IOUtils.toString(xsltLogStream));
+		xsltLogStream.close();
+
+		triplegen.compileXSLT();
+
+		try {
+			triplegen.getTriplesForObject(reader);
+			fail("Shouldn't have been able to extract from that unretrievable content!");
+		} catch (final ServerException e) {
+			logger.info("Behavior with unretrievable datastream was as expected.");
+		}
+	}
+
+	/**
+	 * Convenience method for creating RDF URIs from Strings
+	 * 
+	 * @param v
+	 * @return {@link SimpleURIReference}
+	 */
+	private static URIReference uri(final String v) {
 		return new SimpleURIReference(create(v));
 	}
 
