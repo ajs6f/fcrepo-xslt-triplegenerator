@@ -90,7 +90,7 @@
 								<cargo.servlet.port>${servlet.port}</cargo.servlet.port>
 								<cargo.servlet.uriencoding>UTF-8</cargo.servlet.uriencoding>
 								<cargo.jvmargs>-XX:MaxPermSize=512m -Xmx1024m</cargo.jvmargs>
-								<cargo.logging>high</cargo.logging>
+								<cargo.logging>low</cargo.logging>
 							</properties>
 						</configuration>
 					</configuration>
