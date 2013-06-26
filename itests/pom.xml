@@ -162,7 +162,7 @@
 
 	<profiles>
 		<profile>
-			<id>tomcat6x</id>
+			<id>tomcat7x</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
@@ -174,9 +174,9 @@
 							<artifactId>cargo-maven2-plugin</artifactId>
 							<configuration>
 								<container>
-									<containerId>tomcat6x</containerId>
+									<containerId>tomcat7x</containerId>
 									<zipUrlInstaller>
-										<url>http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.35/bin/apache-tomcat-6.0.35.zip</url>
+										<url>http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.41/bin/apache-tomcat-7.0.41.zip</url>
 									</zipUrlInstaller>
 									<systemProperties>
 										<fedora.home>${fedora.home}</fedora.home>

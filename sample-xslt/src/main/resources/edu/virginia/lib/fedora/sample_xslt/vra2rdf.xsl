@@ -15,6 +15,11 @@
                         <xsl:value-of select="."/>
                     </dc:title>
                 </xsl:for-each>
+                <xsl:for-each select="//vra:rightsHolder">
+                    <dc:accessRights>
+                        <xsl:value-of select="."/>
+                    </dc:accessRights>
+                </xsl:for-each>
             </rdf:Description>
         </rdf:RDF>
     </xsl:template>

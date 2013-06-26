@@ -34,6 +34,11 @@
                     <descriptionSet>
                         <description>It's a picture of an image.</description>
                     </descriptionSet>
+                    <rightsSet>
+                        <rights>
+                            <rightsHolder>It's all good!</rightsHolder>
+                        </rights>
+                    </rightsSet>
                     <titleSet>
                         <title>Funky image</title>
                     </titleSet>
