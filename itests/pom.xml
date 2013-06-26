@@ -37,12 +37,7 @@
 			<version>0.6</version>
 			<classifier>with-dependencies</classifier>
 		</dependency>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava-io</artifactId>
-			<version>r03</version>
-			<scope>test</scope>
-		</dependency>
+		
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
@@ -182,7 +177,7 @@
 										<fedora.home>${fedora.home}</fedora.home>
 										<servlet.port>${servlet.port}</servlet.port>
 									</systemProperties>
-									<log>${project.build.directory}/tomcat6x.log</log>
+									<log>${project.build.directory}/tomcat.log</log>
 									<timeout>360000</timeout>
 								</container>
 							</configuration>

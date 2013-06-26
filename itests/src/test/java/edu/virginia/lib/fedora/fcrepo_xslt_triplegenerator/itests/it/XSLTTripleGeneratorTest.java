@@ -9,15 +9,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.slf4j.Logger;
 
-import com.google.common.io.CharStreams;
 import com.yourmediashelf.fedora.client.FedoraClient;
 import com.yourmediashelf.fedora.client.FedoraClientException;
 import com.yourmediashelf.fedora.client.FedoraCredentials;
@@ -39,7 +38,6 @@ public abstract class XSLTTripleGeneratorTest {
 		setDefaultClient(new FedoraClient(new FedoraCredentials(baseUrl,
 				"fedoraAdmin", "fc")));
 		foxmldir = getProperty("foxml.dir");
-
 	}
 
 	public void ingest(final File foxml) throws FedoraClientException,
@@ -47,10 +45,11 @@ public abstract class XSLTTripleGeneratorTest {
 		logger.debug("Using foxml: \n {}",
 				inputStreamToString(new FileInputStream(foxml)));
 
-		final IngestResponse res = FedoraClient.ingest()
+		final IngestResponse res = FedoraClient
+				.ingest()
 				.content(new FileInputStream(foxml))
 				.format("info:fedora/fedora-system:FOXML-1.1")
-				.logMessage("Ingesting fcrepo-xslt-triplegenerator test:1")
+				.logMessage("Ingesting fcrepo-xslt-triplegenerator test object")
 				.execute();
 		logger.info("Ingested object with result: {}",
 				res.getEntity(String.class));
@@ -63,7 +62,7 @@ public abstract class XSLTTripleGeneratorTest {
 	}
 
 	static String inputStreamToString(final InputStream is) throws IOException {
-		return CharStreams.toString(new InputStreamReader(is));
+		return IOUtils.toString(is);
 	}
 
 }
