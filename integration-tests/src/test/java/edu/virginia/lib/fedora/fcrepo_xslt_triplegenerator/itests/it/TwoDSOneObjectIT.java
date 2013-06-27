@@ -32,11 +32,11 @@ public class TwoDSOneObjectIT extends XSLTTripleGeneratorTest {
 				.format("rdf/xml").flush(true).execute()
 				.getEntity(String.class);
 		logger.debug("Discovered RDF: \n {}", rdf);
-		assertTrue("Didn't find success marker in: \n" + rdf,
+		assertTrue("Didn't find success marker in RDF!",
 				rdf.contains("Funky image"));
-		assertTrue("Didn't find success marker in: \n" + rdf,
+		assertTrue("Didn't find success marker in RDF!",
 				rdf.contains("Digital image"));
-		logger.info("Success!");
+		logger.info("Success.");
 	}
 
 }

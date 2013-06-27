@@ -33,9 +33,9 @@ public class OneDSTwoObjectsIT extends XSLTTripleGeneratorTest {
 				.format("rdf/xml").flush(true).execute()
 				.getEntity(String.class);
 		logger.debug("Discovered RDF: \n {}", rdf);
-		assertTrue("Didn't find success marker in: \n" + rdf,
+		assertTrue("Didn't find success marker in RDF!",
 				rdf.contains("Mr. Ward"));
-		logger.info("Success!");
+		logger.info("Success.");
 	}
 
 	@Test
@@ -46,9 +46,9 @@ public class OneDSTwoObjectsIT extends XSLTTripleGeneratorTest {
 				.format("rdf/xml").flush(true).execute()
 				.getEntity(String.class);
 		logger.debug("Discovered RDF: \n {}", rdf);
-		assertTrue("Didn't find success marker in: \n" + rdf,
+		assertTrue("Didn't find success marker in RDF!",
 				rdf.contains("Funky image"));
-		logger.info("Success!");
+		logger.info("Success.");
 	}
 
 }

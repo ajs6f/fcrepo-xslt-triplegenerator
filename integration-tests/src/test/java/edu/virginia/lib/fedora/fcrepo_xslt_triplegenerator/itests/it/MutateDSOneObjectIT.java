@@ -4,6 +4,7 @@ import static com.yourmediashelf.fedora.client.FedoraClient.modifyDatastream;
 import static com.yourmediashelf.fedora.client.FedoraClient.riSearch;
 import static java.lang.System.getProperty;
 import static java.util.Arrays.asList;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -35,7 +36,7 @@ public class MutateDSOneObjectIT extends XSLTTripleGeneratorTest {
 				.type("triples").format("rdf/xml").flush(true).execute()
 				.getEntity(String.class);
 		logger.debug("Discovered RDF: \n {}", rdf);
-		assertTrue("Didn't find success marker in: \n" + rdf,
+		assertTrue("Didn't find success marker in RDF!",
 				rdf.contains("Mr. Ward"));
 		logger.info("Mutating datastream...");
 		modifyDatastream("test:1", "descMetadata").content(
@@ -44,9 +45,10 @@ public class MutateDSOneObjectIT extends XSLTTripleGeneratorTest {
 				.type("triples").format("rdf/xml").flush(true).execute()
 				.getEntity(String.class);
 		logger.debug("Discovered new RDF: \n {}", rdf);
+		assertFalse("Found old triple in new RDF!", rdf.contains("Mr. Ward"));
 		assertTrue("Didn't find success marker in: \n" + rdf,
 				rdf.contains("Mr. Willis"));
-		logger.info("Success!");
+		logger.info("Success.");
 
 	}
 
