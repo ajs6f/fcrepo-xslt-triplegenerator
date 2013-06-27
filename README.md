@@ -11,5 +11,6 @@ Includes:
 * sample-xslt (sample XSLT for use with this component)
 * itests (integration tests)
 * fedora-webapp-fedora (a Fedora webapp with this component pre-installed)
+* pubby-demo-webapp (an example showing how to use [Pubby](http://wifo5-03.informatik.uni-mannheim.de/pubby/) to integrate Fedora into the Web of Data)
 
 -ajs

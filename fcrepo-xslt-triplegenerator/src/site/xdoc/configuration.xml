@@ -3,12 +3,6 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
     <body>
-        <section name="Using this component pre-installed in a Fedora webapp">
-            <p>You can download a Fedora webapp (in WAR format) with this component pre-installed <a
-                    href="https://github.com/downloads/ajs6f/fcrepo-xslt-triplegenerator/fcrepo-webapp-fedora-0.0.1-SNAPSHOT.war"
-                    >here</a>. It should function easily with any recent Fedora install.</p>
-        </section>
-
         <section name="Making this component available to a pre-existing Fedora webapp">
             <p>Install the <a
                     href="https://github.com/downloads/ajs6f/fcrepo-xslt-triplegenerator/fcrepo-xslt-triplegenerator-1.0-SNAPSHOT-with-dependencies.jar"

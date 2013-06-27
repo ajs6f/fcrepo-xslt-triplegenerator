@@ -9,7 +9,7 @@
             </p>
             <ol>
                 <li>It must transform a single XML metadata document into a single RDF/XML document.</li>
-                <li>The RDF-subjects used in the output document must be of a few possible types:
+                <li>The RDF-subjects used in the output document must be of a few possible choices:
                     <ol>
                         <li>The Fedora URI of the object in question (<code>info:fedora/some:pid123</code>).</li>
                         <li>The Fedora URI of a datastream in the object in question (<code>info:fedora/some:pid123/descMetadata</code>).</li>
@@ -21,8 +21,8 @@
                     </ol>
                 </li>
             </ol>
-            <p>The danger of violating the last condition is that various objects producing triples with subjects that
-           collide or conflict with each other will create broken updating behavior for the Resource Index. For an example, take two objects, each of which
+            <p>The danger of violating the second condition is that various objects producing triples with subjects that
+           collide or conflict with each other will demand impossible behavior from the Resource Index. For an example, take two objects, each of which
             produces a triple: <code><![CDATA[<http://books.org/TomSawyer> hasAuthor <http://people.org/MarkTwain>.]]></code>. The Resource Index
             will contain only one copy of the triple (since triples with identical subject, predicate, and object are identical). When
             one of the objects is purged, the triple will be purged. But the other object (still in the repo) will still require the existence
@@ -31,7 +31,7 @@
         </section>
         <section name="Blank nodes">
             <p>
-                For some kinds of complex description in RDF, it is desired to use blank nodes (unidentified nodes). Partly
+                For some kinds of complex description in RDF, it is desired to use blank (unidentified) nodes. Partly
                 because this component and much of Fedora's internal machinery
                 do not deal in RDF documents, but in sets of triples, it's not possible to make guarantees about how blank
                 nodes will be handled. So in places where you might like to use blank nodes, you'll have to use (automatically)
@@ -53,8 +53,12 @@
     ]]>
             </source>
             <p>
-                This technique amounts to a kind of
-                <a href="http://answers.semanticweb.com/questions/8336/what-is-skolemization">Skolemization</a>.
+                This technique amounts to 
+                <a href="http://answers.semanticweb.com/questions/8336/what-is-skolemization">Skolemization</a>. If you use this style of description, you
+                will have to be careful to avoid changing your XSLT in such a way as to make it impossible for the repository to update
+                objects. This can happen if the same set of triples (with the same identifiers involved) are not generated from a given object after
+                a content update. In general, you should be <i>very sure</i> of your purpose and plan before creating triples with a non-Fedora-curated subject in a 
+                Fedora Resource Index. There is very likely to be another, better way to accomplish your purpose without so doing.
             </p>
         </section>
     </body>
