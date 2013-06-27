@@ -49,7 +49,7 @@ public class XsltDsTripleGenerator implements TripleGenerator {
 	private InputStreamSource xsltInputStreamSource;
 
 	/**
-	 * The datastream against which to transform.
+	 * Selects the datastream against which to transform.
 	 */
 	private String datastreamId;
 
@@ -155,10 +155,20 @@ public class XsltDsTripleGenerator implements TripleGenerator {
 		}
 	}
 
+	/**
+	 * @param rdfXmlString
+	 * @return An {@link InputStream} backed by rdfXmlString
+	 */
 	protected static InputStream getInputStream(final String rdfXmlString) {
 		return new ByteArrayInputStream(rdfXmlString.getBytes());
 	}
 
+	/**
+	 * Pre-compiles the XSLT transform for efficient execution.
+	 * 
+	 * @throws TransformerConfigurationException
+	 * @throws IOException
+	 */
 	@PostConstruct
 	public void compileXSLT() throws TransformerConfigurationException,
 			IOException {
@@ -169,11 +179,19 @@ public class XsltDsTripleGenerator implements TripleGenerator {
 		logger.debug("Finished constructing XSLT tranformer template.");
 	}
 
+	/**
+	 * @param source
+	 *            A Spring {@link InputStreamSource} from which to get the XSLT.
+	 */
 	public void setXsltInputStreamSource(final InputStreamSource source) {
 		this.xsltInputStreamSource = source;
 		logger.debug("Set XSLT source to: {}", source.toString());
 	}
 
+	/**
+	 * @param dsID
+	 *            The datastream ID to be retrieved for transformation.
+	 */
 	public void setDatastreamId(final String dsID) {
 		this.datastreamId = dsID;
 		logger.debug("Set datastream ID to: {}", dsID);

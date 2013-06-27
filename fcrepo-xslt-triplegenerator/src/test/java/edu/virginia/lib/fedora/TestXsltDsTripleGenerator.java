@@ -32,6 +32,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.springframework.core.io.FileSystemResource;
 
+/**
+ * Tests for {@link XsltDsTripleGenerator}
+ * 
+ * @author ajs6f
+ * 
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class TestXsltDsTripleGenerator extends XsltDsTripleGenerator {
 
@@ -43,6 +49,14 @@ public class TestXsltDsTripleGenerator extends XsltDsTripleGenerator {
 	@Mock
 	private DOReader mockReader;
 
+	/**
+	 * Checks for the presence of one RDF triple from the transformed datastream
+	 * after extraction.
+	 * 
+	 * @throws ServerException
+	 * @throws IOException
+	 * @throws TransformerConfigurationException
+	 */
 	@Test
 	public void testCatchOneTriple() throws ServerException, IOException,
 			TransformerConfigurationException {
@@ -77,6 +91,13 @@ public class TestXsltDsTripleGenerator extends XsltDsTripleGenerator {
 		logger.info("Found appropriate triple.");
 	}
 
+	/**
+	 * Checks for appropriate failure in the presence of a non-XML datastream.
+	 * 
+	 * @throws ServerException
+	 * @throws IOException
+	 * @throws TransformerConfigurationException
+	 */
 	@Test
 	public void testNonXMLDatastream() throws ServerException, IOException,
 			TransformerConfigurationException {
@@ -107,6 +128,16 @@ public class TestXsltDsTripleGenerator extends XsltDsTripleGenerator {
 
 	}
 
+	/**
+	 * Checks for the production of triples in the absence of the selected
+	 * datastream. This is correct behavior because an XSLT transform may
+	 * produce triples with no other input than the object PID and datastream
+	 * ID.
+	 * 
+	 * @throws ServerException
+	 * @throws IOException
+	 * @throws TransformerConfigurationException
+	 */
 	@Test
 	public void testCatchOneTripleWithoutDatastream() throws ServerException,
 			IOException, TransformerConfigurationException {
@@ -134,6 +165,14 @@ public class TestXsltDsTripleGenerator extends XsltDsTripleGenerator {
 		logger.info("Found appropriate triple.");
 	}
 
+	/**
+	 * Checks for correct behavior in the presence of an unretrievable
+	 * datastream.
+	 * 
+	 * @throws ServerException
+	 * @throws IOException
+	 * @throws TransformerConfigurationException
+	 */
 	@Test
 	public void testCatchOneTripleWithUnretrievableDatastream()
 			throws ServerException, IOException,
@@ -163,6 +202,12 @@ public class TestXsltDsTripleGenerator extends XsltDsTripleGenerator {
 		}
 	}
 
+	/**
+	 * Checks for correct behavior in the presence of ill-formed RDF/XML.
+	 * 
+	 * @throws SecurityException
+	 * @throws NoSuchMethodException
+	 */
 	@Test
 	public void testBadRdfStringForExtraction() throws SecurityException,
 			NoSuchMethodException {
@@ -174,6 +219,14 @@ public class TestXsltDsTripleGenerator extends XsltDsTripleGenerator {
 		}
 	}
 
+	/**
+	 * Checks for correct behavior in the presence of a malfunctioning RDF
+	 * InputStream.
+	 * 
+	 * @throws SecurityException
+	 * @throws NoSuchMethodException
+	 * @throws IOException
+	 */
 	@Test
 	public void testBadRdfInputStreamForExtraction() throws SecurityException,
 			NoSuchMethodException, IOException {
@@ -191,6 +244,7 @@ public class TestXsltDsTripleGenerator extends XsltDsTripleGenerator {
 	 * Convenience method for creating RDF URIs from Strings
 	 * 
 	 * @param v
+	 *            A {@link String} with the form of an {@link java.net.URI}
 	 * @return {@link SimpleURIReference}
 	 */
 	private static URIReference uri(final String v) {

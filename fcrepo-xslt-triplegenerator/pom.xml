@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>fcrepo-xslt-triplegenerator</artifactId>
 	<packaging>jar</packaging>
-	<name>fcrepo-xslt-triplegenerator</name>
+	<name>Fedora XSLT triplegenerator</name>
 	<description>Generates RDF triples from XML datastreams in Fedora objects.</description>
 
 	<parent>
@@ -52,17 +52,8 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.5.1</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-			<plugin>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.0</version>
+				<version>2.1</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -96,7 +87,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-site-plugin</artifactId>
-				<version>3.1</version>
+				<version>3.3</version>
 			</plugin>
 			<plugin>
 				<groupId>com.github.github</groupId>
@@ -118,7 +109,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>1.7</version>
+				<version>1.8</version>
 				<executions>
 					<execution>
 						<phase>install</phase>
@@ -148,16 +139,13 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
-		<!-- <repository> <id>any23-svn</id> <url>https://svn.apache.org/repos/asf/any23/repo-ext</url> 
-			</repository> -->
 	</repositories>
 
 	<reporting>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>2.5.1</version>
+				<version>2.7</version>
 				<reportSets>
 					<reportSet>
 						<reports>

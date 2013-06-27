@@ -89,6 +89,10 @@ public class SetTripleHandler implements TripleHandler {
 		}
 	}
 
+	/**
+	 * @return The {@link Set<Triple>} that has been accumulated via calls to
+	 *         {@link #receiveTriple(Resource, URI, Value, URI, ExtractionContext)}
+	 */
 	public Set<Triple> getTriples() {
 		return builder.build();
 	}

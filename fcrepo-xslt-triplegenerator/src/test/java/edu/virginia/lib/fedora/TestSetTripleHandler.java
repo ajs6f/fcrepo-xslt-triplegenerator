@@ -8,6 +8,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 import org.apache.any23.Any23;
 import org.apache.any23.extractor.ExtractionException;
@@ -23,25 +24,45 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 
+/**
+ * Tests for {@link SetTripleHandler}
+ * 
+ * @author ajs6f
+ * 
+ */
 public class TestSetTripleHandler extends SetTripleHandler {
 
 	private static final Logger logger = getLogger(TestSetTripleHandler.class);
 
 	private final Any23 any23 = new Any23();
 
-	DocumentSource rdfXmlSource;
+	private DocumentSource rdfXmlSource;
 
+	/**
+	 * Loads a sample RDF/XML document.
+	 */
 	@Before
 	public void setUp() {
 		rdfXmlSource = new FileDocumentSource(new File(
 				"target/test-classes/rdf.xml"));
 	}
 
+	/**
+	 * "Zeros-out" the {@link Set} of {@link Triple}s being accumulated.
+	 */
 	@After
 	public void resetBuilder() {
 		this.builder = builder();
 	}
 
+	/**
+	 * Checks that a triple with all URI nodes from the sample RDF appears in
+	 * the accumulated triples after extraction.
+	 * 
+	 * @throws IOException
+	 * @throws ExtractionException
+	 * @throws TripleHandlerException
+	 */
 	@Test
 	public void testOneTriple() throws IOException, ExtractionException,
 			TripleHandlerException {
@@ -59,6 +80,15 @@ public class TestSetTripleHandler extends SetTripleHandler {
 		close();
 	}
 
+	/**
+	 * Checks that a triple with URI nodes for subject and predicate and literal
+	 * node for object from the sample RDF appears in the accumulated triples
+	 * after extraction.
+	 * 
+	 * @throws IOException
+	 * @throws ExtractionException
+	 * @throws TripleHandlerException
+	 */
 	@Test
 	public void testOneTripleWithLiteral() throws IOException,
 			ExtractionException, TripleHandlerException {
@@ -76,6 +106,17 @@ public class TestSetTripleHandler extends SetTripleHandler {
 		close();
 	}
 
+	/**
+	 * Checks that a triple with absolute URI nodes for subject and predicate
+	 * and relative URI node for object from the sample RDF appears in the
+	 * accumulated triples after extraction. The literal node has the form of a
+	 * relative URI, and Fedora's Resource Index does not contemplate such URIs,
+	 * so we treat it as a literal.
+	 * 
+	 * @throws IOException
+	 * @throws ExtractionException
+	 * @throws TripleHandlerException
+	 */
 	@Test
 	public void testOneTripleWithRelativeUri() throws IOException,
 			ExtractionException, TripleHandlerException {
@@ -93,6 +134,10 @@ public class TestSetTripleHandler extends SetTripleHandler {
 		close();
 	}
 
+	/**
+	 * We do not implement setContentLength() because there is no need for it in
+	 * the Fedora context.
+	 */
 	@Test
 	public void testSetContentLength() {
 		logger.info("Running testSetContentLength()...");
@@ -104,6 +149,13 @@ public class TestSetTripleHandler extends SetTripleHandler {
 		}
 	}
 
+	/**
+	 * Convenience method.
+	 * 
+	 * @param v
+	 *            A {@link String} with the form of an {@link java.net.URI}
+	 * @return A {@link SimpleURIReference}
+	 */
 	private static URIReference uri(final String v) {
 		return new SimpleURIReference(create(v));
 	}

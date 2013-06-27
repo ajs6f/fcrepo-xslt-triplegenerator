@@ -5,9 +5,11 @@
 	<artifactId>xslt-triplegenerator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Fedora XSLT RDF triple generator</name>
-	<url>http://ajs6f.github.com/fcrepo-xslt-triplegenerator</url>
+	<name>Fedora XSLT RDF triple generator parent project</name>
+	<url>http://ajs6f.github.io/fcrepo-xslt-triplegenerator</url>
 
+
+	<description>Generates RDF triples from XML datastreams in Fedora objects.</description>
 
 	<developers>
 		<developer>
@@ -55,7 +57,7 @@
 		<module>integration-tests</module>
 		<module>pubby-demo-webapp</module>
 	</modules>
-	<description>Generates RDF triples from XML datastreams in Fedora objects.</description>
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
