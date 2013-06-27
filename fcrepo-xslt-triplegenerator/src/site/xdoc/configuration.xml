@@ -4,11 +4,17 @@
     xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
     <body>
         <section name="Making this component available to a pre-existing Fedora webapp">
-            <p>Install the <a
-                    href="https://github.com/downloads/ajs6f/fcrepo-xslt-triplegenerator/fcrepo-xslt-triplegenerator-1.0-SNAPSHOT-with-dependencies.jar"
-                    >built library</a> into the <code>WEB-INF/lib</code> directory of your Fedora
-                web-app. Be aware that this is a large package of code, because it includes all of
-                the necessary gear for parsing RDF.</p>
+            <p>Build the library (module fcrepo-xslt-triplegenerator) and install it the resulting
+                jar-with-dependencies artifact into the <code>WEB-INF/lib</code> directory of your
+                Fedora web-app. This is accomplished via: </p>
+            <ol>
+                <li><code>git clone
+                    git://github.com/ajs6f/fcrepo-xslt-triplegenerator.git</code></li>
+                <li><code>cd fcrepo-xslt-triplegenerator</code></li>
+                <li><code>mvn install</code></li>
+            </ol>
+            <p>After which you will find the library in
+                    <code>fcrepo-xslt-triplegenerator/target</code>.</p>
         </section>
         <section name="Configuring this component into Fedora">
             <p> To use this component with Fedora, you will need to adjust the (Spring)
@@ -73,11 +79,11 @@
             <p>The XSLT document for use with this configuration must do one job: it must operate on
                 an XML document and produce an RDF/XML document. (It's worth pointing out that if
                 the original document is already RDF/XML, then the transform can just be an identity
-                transform. If you are concerned with a well-modelled metadata construction like Dublin Core, the
-                transform will be very simple.) Two parameters are available for use in this transform:
-                    <code>pid</code> and <code>datastreamId</code>. The usage of RDF-subjects in the
-                output of this transform is subject to certain conditions: See <a href="xslt.html"
-                    >here</a> for more info.</p>
+                transform. If you are concerned with a well-modelled metadata construction like
+                Dublin Core, the transform will be very simple.) Two parameters are available for
+                use in this transform: <code>pid</code> and <code>datastreamId</code>. The usage of
+                RDF-subjects in the output of this transform is subject to certain conditions: See
+                    <a href="xslt.html">here</a> for more info.</p>
         </section>
     </body>
 </document>

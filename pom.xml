@@ -35,6 +35,11 @@
 		<connection>scm:git://github.com/ajs6f/fcrepo-xslt-triplegenerator.git</connection>
 		<url>https://github.com/ajs6f/fcrepo-xslt-triplegenerator</url>
 	</scm>
+	
+	<issueManagement>
+		<system>Github</system>
+		<url>https://github.com/ajs6f/fcrepo-xslt-triplegenerator/issues</url>
+	</issueManagement>
 
 	<distributionManagement>
 		<site>
