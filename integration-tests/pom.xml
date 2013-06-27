@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
@@ -55,6 +56,7 @@
 		<servlet.port>8080</servlet.port>
 		<fedora.home>${project.build.directory}/fedora-home</fedora.home>
 		<foxml.dir>${project.build.directory}/foxml</foxml.dir>
+		<datastreams.dir>${project.build.directory}/datastreams</datastreams.dir>
 	</properties>
 
 	<build>
@@ -66,6 +68,10 @@
 			<testResource>
 				<directory>${basedir}/src/test/resources/foxml</directory>
 				<targetPath>${foxml.dir}</targetPath>
+			</testResource>
+			<testResource>
+				<directory>${basedir}/src/test/resources/datastreams</directory>
+				<targetPath>${datastreams.dir}</targetPath>
 			</testResource>
 		</testResources>
 		<pluginManagement>
@@ -116,6 +122,10 @@
 								<property>
 									<name>foxml.dir</name>
 									<value>${foxml.dir}</value>
+								</property>
+								<property>
+									<name>datastreams.dir</name>
+									<value>${datastreams.dir}</value>
 								</property>
 							</systemProperties>
 						</configuration>
