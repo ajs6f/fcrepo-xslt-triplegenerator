@@ -9,7 +9,7 @@
 		<groupId>edu.virginia.lib.fedora</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>itests</artifactId>
+	<artifactId>integration-tests</artifactId>
 	<name>Integration tests for fcrepo-xslt-triplegenerator</name>
 
 	<dependencies>

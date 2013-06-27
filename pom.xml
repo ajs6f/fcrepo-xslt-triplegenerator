@@ -52,7 +52,7 @@
 		<module>fcrepo-xslt-triplegenerator</module>
 		<module>sample-xslt</module>
 		<module>fcrepo-webapp-fedora</module>
-		<module>itests</module>
+		<module>integration-tests</module>
 		<module>pubby-demo-webapp</module>
 	</modules>
 	<description>Generates RDF triples from XML datastreams in Fedora objects.</description>
