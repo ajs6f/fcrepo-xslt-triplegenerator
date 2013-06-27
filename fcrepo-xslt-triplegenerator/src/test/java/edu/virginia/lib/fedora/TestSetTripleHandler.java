@@ -1,5 +1,6 @@
 package edu.virginia.lib.fedora;
 
+import static com.google.common.collect.ImmutableSet.builder;
 import static java.net.URI.create;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -17,11 +18,12 @@ import org.fcrepo.common.rdf.SimpleLiteral;
 import org.fcrepo.common.rdf.SimpleTriple;
 import org.fcrepo.common.rdf.SimpleURIReference;
 import org.jrdf.graph.URIReference;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 
-public class TestSetTripleHandler {
+public class TestSetTripleHandler extends SetTripleHandler {
 
 	private static final Logger logger = getLogger(TestSetTripleHandler.class);
 
@@ -35,66 +37,67 @@ public class TestSetTripleHandler {
 				"target/test-classes/rdf.xml"));
 	}
 
+	@After
+	public void resetBuilder() {
+		this.builder = builder();
+	}
+
 	@Test
 	public void testOneTriple() throws IOException, ExtractionException,
 			TripleHandlerException {
 		logger.info("Running testOneTriple()...");
-		final SetTripleHandler handler = new SetTripleHandler();
-		any23.extract(rdfXmlSource, handler);
+		any23.extract(rdfXmlSource, this);
 		assertTrue(
 				"Didn't find appropriate triple!",
-				handler.getTriples()
+				getTriples()
 						.contains(
 								new SimpleTriple(
 										uri("info:fedora/uva-lib:1038847"),
 										uri("http://fedora.lib.virginia.edu/relationships#testPredicate"),
 										uri("info:test/resource"))));
 		logger.info("Found appropriate triple.");
-		handler.close();
+		close();
 	}
 
 	@Test
 	public void testOneTripleWithLiteral() throws IOException,
 			ExtractionException, TripleHandlerException {
 		logger.info("Running testOneTripleWithLiteral()...");
-		final SetTripleHandler handler = new SetTripleHandler();
-		any23.extract(rdfXmlSource, handler);
+		any23.extract(rdfXmlSource, this);
 		assertTrue(
 				"Didn't find appropriate triple!",
-				handler.getTriples()
+				getTriples()
 						.contains(
 								new SimpleTriple(
 										uri("info:fedora/uva-lib:1038847"),
 										uri("http://fedora.lib.virginia.edu/relationships#testPredicateWithLiteral"),
 										new SimpleLiteral("literal value"))));
 		logger.info("Found appropriate triple.");
-		handler.close();
+		close();
 	}
 
 	@Test
 	public void testOneTripleWithRelativeUri() throws IOException,
 			ExtractionException, TripleHandlerException {
 		logger.info("Running testOneTripleWithRelativeUri()...");
-		final SetTripleHandler handler = new SetTripleHandler();
-		any23.extract(rdfXmlSource, handler);
+		any23.extract(rdfXmlSource, this);
 		assertTrue(
 				"Didn't find appropriate triple!",
-				handler.getTriples()
+				getTriples()
 						.contains(
 								new SimpleTriple(
 										uri("info:fedora/uva-lib:1038847"),
 										uri("http://fedora.lib.virginia.edu/relationships#testPredicateWithLiteral"),
 										new SimpleLiteral("/relative/uri/"))));
 		logger.info("Found appropriate triple.");
-		handler.close();
+		close();
 	}
 
 	@Test
 	public void testSetContentLength() {
 		logger.info("Running testSetContentLength()...");
-		final SetTripleHandler handler = new SetTripleHandler();
 		try {
-			handler.setContentLength(0);
+			setContentLength(0);
 			fail("setContentLength() didn't throw an UnsupportedOperationException!");
 		} catch (final UnsupportedOperationException e) {
 			logger.info("Found correct behavior for setContentLength().");

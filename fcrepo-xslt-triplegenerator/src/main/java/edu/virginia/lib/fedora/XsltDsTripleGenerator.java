@@ -122,7 +122,7 @@ public class XsltDsTripleGenerator implements TripleGenerator {
 		// TODO use better streaming when Any23 provides for it
 		final String rdfXmlString = rdfXmlResult.getWriter().toString();
 		logger.debug("Extracting triples from: {}", rdfXmlString);
-		return extractTriples(rdfXmlString);
+		return extractTriples(getInputStream(rdfXmlString));
 	}
 
 	/**
@@ -131,11 +131,9 @@ public class XsltDsTripleGenerator implements TripleGenerator {
 	 * @return A {@link Set<Triple>} of triples extracted
 	 * @throws ResourceIndexException
 	 */
-	private Set<Triple> extractTriples(final String rdfXmlString)
+	protected Set<Triple> extractTriples(final InputStream rdfXml)
 			throws ResourceIndexException {
 		// handler will collect emitted triples into a set
-		final InputStream rdfXmlInputStream = new ByteArrayInputStream(
-				rdfXmlString.getBytes());
 		final SetTripleHandler handler = new SetTripleHandler();
 
 		/*
@@ -145,17 +143,20 @@ public class XsltDsTripleGenerator implements TripleGenerator {
 		 * Resource Index doesn't contemplate such mechanics.
 		 */
 		try {
-			final DocumentSource source = new ByteArrayDocumentSource(
-					rdfXmlInputStream, "http://dummy.absolute.url",
-					"application/rdf+xml");
+			final DocumentSource source = new ByteArrayDocumentSource(rdfXml,
+					"http://dummy.absolute.url", "application/rdf+xml");
 			any23.extract(source, handler);
-			rdfXmlInputStream.close();
+			rdfXml.close();
 			return handler.getTriples();
 		} catch (final IOException e) {
 			throw new ResourceIndexException(e.getLocalizedMessage(), e);
 		} catch (final ExtractionException e) {
 			throw new ResourceIndexException(e.getLocalizedMessage(), e);
 		}
+	}
+
+	protected static InputStream getInputStream(final String rdfXmlString) {
+		return new ByteArrayInputStream(rdfXmlString.getBytes());
 	}
 
 	@PostConstruct

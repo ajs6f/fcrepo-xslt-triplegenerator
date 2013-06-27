@@ -37,7 +37,7 @@ public class SetTripleHandler implements TripleHandler {
 	/**
 	 * A set-builder for the {@link Set} of {@link Triple}s we are collecting.
 	 */
-	private final Builder<Triple> builder = builder();
+	protected Builder<Triple> builder = builder();
 
 	private static final Logger logger = getLogger(SetTripleHandler.class);
 
@@ -100,6 +100,7 @@ public class SetTripleHandler implements TripleHandler {
 	 */
 	@Override
 	public void close() throws TripleHandlerException {
+		builder = null;
 	}
 
 	/*

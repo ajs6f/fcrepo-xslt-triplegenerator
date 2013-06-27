@@ -3,6 +3,8 @@ package edu.virginia.lib.fedora;
 import static java.net.URI.create;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -31,15 +33,15 @@ import org.slf4j.Logger;
 import org.springframework.core.io.FileSystemResource;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TestXsltDsTripleGenerator {
+public class TestXsltDsTripleGenerator extends XsltDsTripleGenerator {
 
 	private static final Logger logger = getLogger(TestXsltDsTripleGenerator.class);
 
 	@Mock
-	private Datastream datastream;
+	private Datastream mockDatastream;
 
 	@Mock
-	private DOReader reader;
+	private DOReader mockReader;
 
 	@Test
 	public void testCatchOneTriple() throws ServerException, IOException,
@@ -48,25 +50,24 @@ public class TestXsltDsTripleGenerator {
 		final String xsltFile = "target/test-classes/mods2rdf.xsl";
 		final String dsFile = "target/test-classes/mods.xml";
 
-		when(reader.GetDatastream("MODS", null)).thenReturn(datastream);
-		when(datastream.getContentStream()).thenReturn(
+		when(mockReader.GetDatastream("MODS", null)).thenReturn(mockDatastream);
+		when(mockDatastream.getContentStream()).thenReturn(
 				new FileInputStream(dsFile));
 
 		final InputStream dsLogStream = new FileInputStream(dsFile);
 		logger.debug("Using mock datastream: {}", IOUtils.toString(dsLogStream));
 		dsLogStream.close();
 
-		final XsltDsTripleGenerator triplegen = new XsltDsTripleGenerator();
-		triplegen.setDatastreamId("MODS");
+		setDatastreamId("MODS");
 
-		triplegen.setXsltInputStreamSource(new FileSystemResource(xsltFile));
+		setXsltInputStreamSource(new FileSystemResource(xsltFile));
 
 		final InputStream xsltLogStream = new FileInputStream(xsltFile);
 		logger.debug("Using XSLT transform: {}",
 				IOUtils.toString(xsltLogStream));
 		xsltLogStream.close();
-		triplegen.compileXSLT();
-		final Set<Triple> triples = triplegen.getTriplesForObject(reader);
+		compileXSLT();
+		final Set<Triple> triples = getTriplesForObject(mockReader);
 		assertTrue(
 				"Didn't find appropriate triple!",
 				triples.contains(new SimpleTriple(
@@ -83,23 +84,22 @@ public class TestXsltDsTripleGenerator {
 		final String xsltFile = "target/test-classes/mods2rdf.xsl";
 		final String dsFile = "target/test-classes/non-XML-datastream.txt";
 
-		when(reader.GetDatastream("MODS", null)).thenReturn(datastream);
-		when(datastream.getContentStream()).thenReturn(
+		when(mockReader.GetDatastream("MODS", null)).thenReturn(mockDatastream);
+		when(mockDatastream.getContentStream()).thenReturn(
 				new FileInputStream(dsFile));
 
 		final InputStream dsLogStream = new FileInputStream(dsFile);
 		logger.debug("Using mock datastream: {}", IOUtils.toString(dsLogStream));
 		dsLogStream.close();
 
-		final XsltDsTripleGenerator triplegen = new XsltDsTripleGenerator();
-		triplegen.setDatastreamId("MODS");
-		triplegen.setXsltInputStreamSource(new FileSystemResource(xsltFile));
+		setDatastreamId("MODS");
+		setXsltInputStreamSource(new FileSystemResource(xsltFile));
 		final InputStream xsltLogStream = new FileInputStream(xsltFile);
 		xsltLogStream.close();
-		triplegen.compileXSLT();
+		compileXSLT();
 
 		try {
-			triplegen.getTriplesForObject(reader);
+			getTriplesForObject(mockReader);
 			fail("Shouldn't have been able to extract from that content!");
 		} catch (final ResourceIndexException e) {
 			logger.info("Behavior with non-XML datastream was as expected.");
@@ -112,20 +112,19 @@ public class TestXsltDsTripleGenerator {
 			IOException, TransformerConfigurationException {
 		logger.info("Running testCatchOneTripleWithoutDatastream()...");
 		final String xsltFile = "target/test-classes/mods2rdf.xsl";
-		when(reader.GetDatastream("MODS", null)).thenReturn(null);
-		when(reader.GetObjectPID()).thenReturn("test");
+		when(mockReader.GetDatastream("MODS", null)).thenReturn(null);
+		when(mockReader.GetObjectPID()).thenReturn("test");
 
-		final XsltDsTripleGenerator triplegen = new XsltDsTripleGenerator();
-		triplegen.setDatastreamId("MODS");
-		triplegen.setXsltInputStreamSource(new FileSystemResource(xsltFile));
+		setDatastreamId("MODS");
+		setXsltInputStreamSource(new FileSystemResource(xsltFile));
 		final InputStream xsltLogStream = new FileInputStream(xsltFile);
 		logger.debug("Using XSLT transform: {}",
 				IOUtils.toString(xsltLogStream));
 		xsltLogStream.close();
 
-		triplegen.compileXSLT();
+		compileXSLT();
 
-		final Set<Triple> triples = triplegen.getTriplesForObject(reader);
+		final Set<Triple> triples = getTriplesForObject(mockReader);
 		assertTrue(
 				"Didn't find our triple!",
 				triples.contains(new SimpleTriple(
@@ -139,31 +138,52 @@ public class TestXsltDsTripleGenerator {
 	public void testCatchOneTripleWithUnretrievableDatastream()
 			throws ServerException, IOException,
 			TransformerConfigurationException {
-		logger.info("Running testCatchOneTripleWithoutDatastream()...");
+		logger.info("Running testCatchOneTripleWithUnretrievableDatastream()...");
 		final String xsltFile = "target/test-classes/mods2rdf.xsl";
-		when(reader.GetDatastream("MODS", null))
+		when(mockReader.GetDatastream("MODS", null))
 				.thenThrow(
 						new StreamIOException(
 								"Dummy exception representing a failure to retrieve datastream content."));
-		when(reader.GetObjectPID()).thenReturn("test");
+		when(mockReader.GetObjectPID()).thenReturn("test");
 
-		final XsltDsTripleGenerator triplegen = new XsltDsTripleGenerator();
-		triplegen.setDatastreamId("MODS");
-
-		triplegen.setXsltInputStreamSource(new FileSystemResource(xsltFile));
+		setDatastreamId("MODS");
+		setXsltInputStreamSource(new FileSystemResource(xsltFile));
 
 		final InputStream xsltLogStream = new FileInputStream(xsltFile);
 		logger.debug("Using XSLT transform: {}",
 				IOUtils.toString(xsltLogStream));
 		xsltLogStream.close();
-
-		triplegen.compileXSLT();
+		compileXSLT();
 
 		try {
-			triplegen.getTriplesForObject(reader);
+			getTriplesForObject(mockReader);
 			fail("Shouldn't have been able to extract from that unretrievable content!");
 		} catch (final ServerException e) {
 			logger.info("Behavior with unretrievable datastream was as expected.");
+		}
+	}
+
+	@Test
+	public void testBadRdfStringForExtraction() throws SecurityException,
+			NoSuchMethodException {
+		try {
+			extractTriples(getInputStream("Junk rdf"));
+			fail("Shouldn't have been able to extract from that bad RDF String!");
+		} catch (final ResourceIndexException e) {
+			logger.info("Behavior with bad RDF String was as expected.");
+		}
+	}
+
+	@Test
+	public void testBadRdfInputStreamForExtraction() throws SecurityException,
+			NoSuchMethodException, IOException {
+		final InputStream mockRdfXml = mock(InputStream.class);
+		when(mockRdfXml.read(any(byte[].class))).thenThrow(new IOException());
+		try {
+			extractTriples(mockRdfXml);
+			fail("Shouldn't have been able to extract from that bad RDF InputStream!");
+		} catch (final ResourceIndexException e) {
+			logger.info("Behavior with bad RDF InputStream was as expected.");
 		}
 	}
 
