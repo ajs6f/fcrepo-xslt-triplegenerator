@@ -36,6 +36,13 @@
 		<url>https://github.com/ajs6f/fcrepo-xslt-triplegenerator</url>
 	</scm>
 
+	<distributionManagement>
+		<site>
+			<id>Project website</id>
+			<url>http://ajs6f.github.io/fcrepo-xslt-triplegenerator</url>
+		</site>
+	</distributionManagement>
+
 	<modules>
 		<module>fcrepo-xslt-triplegenerator</module>
 		<module>sample-xslt</module>

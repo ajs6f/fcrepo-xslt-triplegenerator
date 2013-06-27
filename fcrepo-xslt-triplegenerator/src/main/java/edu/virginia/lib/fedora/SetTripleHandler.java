@@ -1,5 +1,6 @@
 package edu.virginia.lib.fedora;
 
+import static com.google.common.collect.ImmutableSet.builder;
 import static java.net.URI.create;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -24,7 +25,9 @@ import com.google.common.collect.ImmutableSet.Builder;
 
 /**
  * Utility class to produce a set of triples from a stream of triples produced
- * by Any23 parsing.
+ * by Any23 parsing. Most of {@link TripleHandler}'s methods are unimplemented,
+ * because this class expects to produce nothing other than a {@link Set} of the
+ * triples emitted into it.
  * 
  * @author ajs6f
  */
@@ -32,9 +35,9 @@ import com.google.common.collect.ImmutableSet.Builder;
 public class SetTripleHandler implements TripleHandler {
 
 	/**
-	 * The set of triples we are collecting.
+	 * A set-builder for the {@link Set} of {@link Triple}s we are collecting.
 	 */
-	private final Builder<Triple> builder = new Builder<Triple>();
+	private final Builder<Triple> builder = builder();
 
 	private static final Logger logger = getLogger(SetTripleHandler.class);
 
@@ -47,11 +50,11 @@ public class SetTripleHandler implements TripleHandler {
 	 * org.openrdf.model.URI, org.apache.any23.extractor.ExtractionContext)
 	 */
 	@Override
-	public void receiveTriple(final Resource arg0, final URI arg1,
-			final Value arg2, final URI arg3, final ExtractionContext arg4)
+	public void receiveTriple(final Resource s, final URI p, final Value o,
+			final URI g, final ExtractionContext ec)
 			throws TripleHandlerException {
-		final SimpleTriple triple = new SimpleTriple(uri(arg0), uri(arg1),
-				objectValue(arg2));
+		final SimpleTriple triple = new SimpleTriple(uri(s), uri(p),
+				objectNode(o));
 		builder.add(triple);
 		logger.debug("Added triple: {}", triple.toString());
 	}
@@ -71,14 +74,14 @@ public class SetTripleHandler implements TripleHandler {
 	 * @return Either a {@link SimpleLiteral} or {@link SimpleURIReference}
 	 *         depending on whether v seems to be a literal or not
 	 */
-	private static ObjectNode objectValue(final Value value) {
+	private static ObjectNode objectNode(final Value value) {
 		final String v = value.stringValue();
 		try {
 			final java.net.URI uri = new java.net.URI(v);
 			if (uri.isAbsolute()) {
 				return new SimpleURIReference(uri);
 			} else {
-				// assume that it's a literal that resembles an URI
+				// Fedora's Resource Index does not contemplate relative URIs
 				return new SimpleLiteral(v);
 			}
 		} catch (final URISyntaxException e) {
@@ -107,7 +110,7 @@ public class SetTripleHandler implements TripleHandler {
 	 * .URI)
 	 */
 	@Override
-	public void startDocument(final URI arg0) throws TripleHandlerException {
+	public void startDocument(final URI u) throws TripleHandlerException {
 	}
 
 	/*
@@ -117,7 +120,7 @@ public class SetTripleHandler implements TripleHandler {
 	 * org.apache.any23.writer.TripleHandler#endDocument(org.openrdf.model.URI)
 	 */
 	@Override
-	public void endDocument(final URI arg0) throws TripleHandlerException {
+	public void endDocument(final URI u) throws TripleHandlerException {
 	}
 
 	/*
@@ -126,7 +129,7 @@ public class SetTripleHandler implements TripleHandler {
 	 * @see org.apache.any23.writer.TripleHandler#setContentLength(long)
 	 */
 	@Override
-	public void setContentLength(final long arg0) {
+	public void setContentLength(final long l) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -138,7 +141,7 @@ public class SetTripleHandler implements TripleHandler {
 	 * .ExtractionContext)
 	 */
 	@Override
-	public void openContext(final ExtractionContext arg0)
+	public void openContext(final ExtractionContext ec)
 			throws TripleHandlerException {
 	}
 
@@ -150,8 +153,8 @@ public class SetTripleHandler implements TripleHandler {
 	 * java.lang.String, org.apache.any23.extractor.ExtractionContext)
 	 */
 	@Override
-	public void receiveNamespace(final String arg0, final String arg1,
-			final ExtractionContext arg2) throws TripleHandlerException {
+	public void receiveNamespace(final String prefix, final String uri,
+			final ExtractionContext ec) throws TripleHandlerException {
 	}
 
 	/*
@@ -162,7 +165,7 @@ public class SetTripleHandler implements TripleHandler {
 	 * .ExtractionContext)
 	 */
 	@Override
-	public void closeContext(final ExtractionContext arg0)
+	public void closeContext(final ExtractionContext ec)
 			throws TripleHandlerException {
 	}
 }

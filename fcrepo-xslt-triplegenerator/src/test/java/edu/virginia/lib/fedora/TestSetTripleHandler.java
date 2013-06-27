@@ -41,14 +41,15 @@ public class TestSetTripleHandler {
 		logger.info("Running testOneTriple()...");
 		final SetTripleHandler handler = new SetTripleHandler();
 		any23.extract(rdfXmlSource, handler);
-		final SimpleTriple triple = new SimpleTriple(
-				uri("info:fedora/uva-lib:1038847"),
-				uri("http://fedora.lib.virginia.edu/relationships#testPredicate"),
-				uri("info:test/resource"));
-		logger.info("Looking for triple: {}", triple.toString());
-		assertTrue("Oh, no! Didn't find the triple", handler.getTriples()
-				.contains(triple));
-		logger.info("Found it!");
+		assertTrue(
+				"Didn't find appropriate triple!",
+				handler.getTriples()
+						.contains(
+								new SimpleTriple(
+										uri("info:fedora/uva-lib:1038847"),
+										uri("http://fedora.lib.virginia.edu/relationships#testPredicate"),
+										uri("info:test/resource"))));
+		logger.info("Found appropriate triple.");
 		handler.close();
 	}
 
@@ -58,14 +59,15 @@ public class TestSetTripleHandler {
 		logger.info("Running testOneTripleWithLiteral()...");
 		final SetTripleHandler handler = new SetTripleHandler();
 		any23.extract(rdfXmlSource, handler);
-		final SimpleTriple triple = new SimpleTriple(
-				uri("info:fedora/uva-lib:1038847"),
-				uri("http://fedora.lib.virginia.edu/relationships#testPredicateWithLiteral"),
-				new SimpleLiteral("literal value"));
-		logger.info("Looking for triple: {}", triple.toString());
-		assertTrue("Oh, no! Didn't find the triple", handler.getTriples()
-				.contains(triple));
-		logger.info("Found it!");
+		assertTrue(
+				"Didn't find appropriate triple!",
+				handler.getTriples()
+						.contains(
+								new SimpleTriple(
+										uri("info:fedora/uva-lib:1038847"),
+										uri("http://fedora.lib.virginia.edu/relationships#testPredicateWithLiteral"),
+										new SimpleLiteral("literal value"))));
+		logger.info("Found appropriate triple.");
 		handler.close();
 	}
 
@@ -75,14 +77,15 @@ public class TestSetTripleHandler {
 		logger.info("Running testOneTripleWithRelativeUri()...");
 		final SetTripleHandler handler = new SetTripleHandler();
 		any23.extract(rdfXmlSource, handler);
-		final SimpleTriple triple = new SimpleTriple(
-				uri("info:fedora/uva-lib:1038847"),
-				uri("http://fedora.lib.virginia.edu/relationships#testPredicateWithLiteral"),
-				new SimpleLiteral("/relative/uri/"));
-		logger.info("Looking for triple: {}", triple.toString());
-		assertTrue("Oh, no! Didn't find the triple", handler.getTriples()
-				.contains(triple));
-		logger.info("Found it!");
+		assertTrue(
+				"Didn't find appropriate triple!",
+				handler.getTriples()
+						.contains(
+								new SimpleTriple(
+										uri("info:fedora/uva-lib:1038847"),
+										uri("http://fedora.lib.virginia.edu/relationships#testPredicateWithLiteral"),
+										new SimpleLiteral("/relative/uri/"))));
+		logger.info("Found appropriate triple.");
 		handler.close();
 	}
 
@@ -94,7 +97,7 @@ public class TestSetTripleHandler {
 			handler.setContentLength(0);
 			fail("setContentLength() didn't throw an UnsupportedOperationException!");
 		} catch (final UnsupportedOperationException e) {
-			logger.info("Correct behavior for setContentLength()");
+			logger.info("Found correct behavior for setContentLength().");
 		}
 	}
 

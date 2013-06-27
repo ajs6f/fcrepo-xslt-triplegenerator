@@ -93,7 +93,7 @@ public class XsltDsTripleGenerator implements TripleGenerator {
 				/**
 				 * We do not return an empty Set<Triple> at this point to allow
 				 * for the possibility that the XSLT may generate triples based
-				 * only on the pid and dsID. Instead, we generate dummy
+				 * only on the pid and datastream ID. Instead, we generate dummy
 				 * datastream content.
 				 */
 
@@ -103,7 +103,7 @@ public class XsltDsTripleGenerator implements TripleGenerator {
 				dsContentStream = datastream.getContentStream();
 			}
 
-			// now to transform it with the configured XSLT
+			// transform the datastream content with the configured XSLT
 			datastreamSource = new SAXSource(new InputSource(dsContentStream));
 			// make the datastream ID and pid available as XSLT parameters
 			final Transformer transformer = template.newTransformer();
@@ -121,11 +121,29 @@ public class XsltDsTripleGenerator implements TripleGenerator {
 
 		// TODO use better streaming when Any23 provides for it
 		final String rdfXmlString = rdfXmlResult.getWriter().toString();
+		logger.debug("Extracting triples from: {}", rdfXmlString);
+		return extractTriples(rdfXmlString);
+	}
+
+	/**
+	 * @param rdfXmlString
+	 *            {@link String} containing RDF/XML
+	 * @return A {@link Set<Triple>} of triples extracted
+	 * @throws ResourceIndexException
+	 */
+	private Set<Triple> extractTriples(final String rdfXmlString)
+			throws ResourceIndexException {
+		// handler will collect emitted triples into a set
 		final InputStream rdfXmlInputStream = new ByteArrayInputStream(
 				rdfXmlString.getBytes());
-		// handler will collect emitted triples into a set
 		final SetTripleHandler handler = new SetTripleHandler();
-		logger.debug("Extracting triples from: {}", rdfXmlString);
+
+		/*
+		 * We use a dummy absolute document because Any23 requires it, expecting
+		 * as it does to absolutize any relative URLs. In fact we know that no
+		 * URI offered for extraction will properly be relative-- Fedora's
+		 * Resource Index doesn't contemplate such mechanics.
+		 */
 		try {
 			final DocumentSource source = new ByteArrayDocumentSource(
 					rdfXmlInputStream, "http://dummy.absolute.url",

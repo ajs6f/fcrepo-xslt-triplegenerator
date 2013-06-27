@@ -65,17 +65,15 @@ public class TestXsltDsTripleGenerator {
 		logger.debug("Using XSLT transform: {}",
 				IOUtils.toString(xsltLogStream));
 		xsltLogStream.close();
-
 		triplegen.compileXSLT();
-
 		final Set<Triple> triples = triplegen.getTriplesForObject(reader);
-		final SimpleTriple triple = new SimpleTriple(
-				uri("info:fedora/uva-lib:1038847"),
-				uri("http://fedora.lib.virginia.edu/relationships#isFollowingPageOf"),
-				uri("info:fedora/uva-lib:1038846"));
-		logger.info("Looking for triple: {}", triple.toString());
-		assertTrue("Uh oh! Didn't find it", triples.contains(triple));
-		logger.info("Found it!");
+		assertTrue(
+				"Didn't find appropriate triple!",
+				triples.contains(new SimpleTriple(
+						uri("info:fedora/uva-lib:1038847"),
+						uri("http://fedora.lib.virginia.edu/relationships#isFollowingPageOf"),
+						uri("info:fedora/uva-lib:1038846"))));
+		logger.info("Found appropriate triple.");
 	}
 
 	@Test
@@ -83,7 +81,7 @@ public class TestXsltDsTripleGenerator {
 			TransformerConfigurationException {
 		logger.info("Running testNonXMLDatastream()...");
 		final String xsltFile = "target/test-classes/mods2rdf.xsl";
-		final String dsFile = "target/test-classes/bad-mods.txt";
+		final String dsFile = "target/test-classes/non-XML-datastream.txt";
 
 		when(reader.GetDatastream("MODS", null)).thenReturn(datastream);
 		when(datastream.getContentStream()).thenReturn(
@@ -95,14 +93,9 @@ public class TestXsltDsTripleGenerator {
 
 		final XsltDsTripleGenerator triplegen = new XsltDsTripleGenerator();
 		triplegen.setDatastreamId("MODS");
-
 		triplegen.setXsltInputStreamSource(new FileSystemResource(xsltFile));
-
 		final InputStream xsltLogStream = new FileInputStream(xsltFile);
-		logger.debug("Using XSLT transform: {}",
-				IOUtils.toString(xsltLogStream));
 		xsltLogStream.close();
-
 		triplegen.compileXSLT();
 
 		try {
@@ -124,9 +117,7 @@ public class TestXsltDsTripleGenerator {
 
 		final XsltDsTripleGenerator triplegen = new XsltDsTripleGenerator();
 		triplegen.setDatastreamId("MODS");
-
 		triplegen.setXsltInputStreamSource(new FileSystemResource(xsltFile));
-
 		final InputStream xsltLogStream = new FileInputStream(xsltFile);
 		logger.debug("Using XSLT transform: {}",
 				IOUtils.toString(xsltLogStream));
@@ -135,13 +126,13 @@ public class TestXsltDsTripleGenerator {
 		triplegen.compileXSLT();
 
 		final Set<Triple> triples = triplegen.getTriplesForObject(reader);
-		final SimpleTriple triple = new SimpleTriple(
-				uri("info:fedora/uva-lib:1038847"),
-				uri("http://fedora.lib.virginia.edu/relationships#isFollowingPageOf"),
-				uri("info:fedora/uva-lib:1038846"));
-		logger.info("Looking for triple: {}", triple.toString());
-		assertTrue("Uh oh! Didn't find it", triples.contains(triple));
-		logger.info("Found it!");
+		assertTrue(
+				"Didn't find our triple!",
+				triples.contains(new SimpleTriple(
+						uri("info:fedora/uva-lib:1038847"),
+						uri("http://fedora.lib.virginia.edu/relationships#isFollowingPageOf"),
+						uri("info:fedora/uva-lib:1038846"))));
+		logger.info("Found appropriate triple.");
 	}
 
 	@Test
